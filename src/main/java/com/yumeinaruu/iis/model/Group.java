@@ -17,8 +17,8 @@ public class Group {
     @GeneratedValue(generator = "groupIdSeqGen")
     private Long id;
 
-    @Column(name = "group_name", nullable = false, unique = true)
-    private String groupName;
+    @Column(name = "name", nullable = false, unique = true)
+    private String name;
 
     @Column(name = "faculty_id", nullable = false)
     private Long facultyId;
