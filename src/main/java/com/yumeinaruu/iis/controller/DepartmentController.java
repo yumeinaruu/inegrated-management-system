@@ -2,8 +2,8 @@ package com.yumeinaruu.iis.controller;
 
 import com.yumeinaruu.iis.exception.custom_exception.CustomValidationException;
 import com.yumeinaruu.iis.model.Department;
-import com.yumeinaruu.iis.model.dto.DepartmentDtoCreate;
-import com.yumeinaruu.iis.model.dto.DepartmentDtoUpdate;
+import com.yumeinaruu.iis.model.dto.department.DepartmentDtoCreate;
+import com.yumeinaruu.iis.model.dto.department.DepartmentDtoUpdate;
 import com.yumeinaruu.iis.service.DepartmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/department")
 public class DepartmentController {
-    DepartmentService departmentService;
+    private final DepartmentService departmentService;
 
     @Autowired
     public DepartmentController(DepartmentService departmentService) {

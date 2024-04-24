@@ -1,8 +1,8 @@
 package com.yumeinaruu.iis.service;
 
 import com.yumeinaruu.iis.model.Department;
-import com.yumeinaruu.iis.model.dto.DepartmentDtoCreate;
-import com.yumeinaruu.iis.model.dto.DepartmentDtoUpdate;
+import com.yumeinaruu.iis.model.dto.department.DepartmentDtoCreate;
+import com.yumeinaruu.iis.model.dto.department.DepartmentDtoUpdate;
 import com.yumeinaruu.iis.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
