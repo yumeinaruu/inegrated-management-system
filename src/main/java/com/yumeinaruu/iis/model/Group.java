@@ -8,7 +8,7 @@ import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
-@Entity(name = "group")
+@Entity(name = "groups")
 @Data
 @Component
 public class Group {

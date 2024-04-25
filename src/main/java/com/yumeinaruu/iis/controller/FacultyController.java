@@ -42,7 +42,7 @@ public class FacultyController {
     }
 
     @GetMapping("/name")
-    public ResponseEntity<List<Faculty>> getAllFacultiesByName() {
+    public ResponseEntity<List<Faculty>> getAllFacultiesSortedByName() {
         List<Faculty> faculties = facultyService.getFacultiesSortedByName();
         if (faculties.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -69,7 +69,11 @@ public class FacultyController {
     }
 
     @PutMapping
-    public ResponseEntity<HttpStatus> updateFaculty(@RequestBody @Valid FacultyUpdateDto facultyUpdateDto) {
+    public ResponseEntity<HttpStatus> updateFaculty(@RequestBody @Valid FacultyUpdateDto facultyUpdateDto,
+                                                    BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            throw new CustomValidationException(bindingResult.getAllErrors().toString());
+        }
         return new ResponseEntity<>(facultyService.updateFaculty(facultyUpdateDto) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }
 

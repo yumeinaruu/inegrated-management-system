@@ -54,7 +54,7 @@ create table public."group"
             references public.speciality
 );
 
-alter table public."group"
+alter table public.groups
     owner to postgres;
 
 create table public.users
@@ -67,7 +67,7 @@ create table public.users
     changed  timestamp,
     group_id bigint
         constraint users_group_id_fk
-            references public."group"
+            references public.groups
 );
 
 alter table public.users

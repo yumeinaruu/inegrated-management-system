@@ -69,7 +69,11 @@ public class DepartmentController {
     }
 
     @PutMapping
-    public ResponseEntity<HttpStatus> updateDepartment(@RequestBody @Valid DepartmentDtoUpdate departmentDtoUpdate) {
+    public ResponseEntity<HttpStatus> updateDepartment(@RequestBody @Valid DepartmentDtoUpdate departmentDtoUpdate,
+                                                       BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            throw new CustomValidationException(bindingResult.getAllErrors().toString());
+        }
         return new ResponseEntity<>(departmentService.updateDepartment(departmentDtoUpdate) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }
 
