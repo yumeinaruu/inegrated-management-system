@@ -6,6 +6,7 @@ import com.yumeinaruu.iis.repository.GroupRepository;
 import com.yumeinaruu.iis.repository.UsersRepository;
 import com.yumeinaruu.iis.security.model.Security;
 import com.yumeinaruu.iis.security.model.dto.AuthRequestDto;
+import com.yumeinaruu.iis.security.model.dto.GiveRoleDto;
 import com.yumeinaruu.iis.security.model.dto.RegistrationDto;
 import com.yumeinaruu.iis.security.model.dto.Roles;
 import com.yumeinaruu.iis.security.repository.SecurityRepository;
@@ -37,16 +38,16 @@ public class SecurityService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void registration(RegistrationDto registrationDto){
+    public void registration(RegistrationDto registrationDto) {
         Optional<Security> security = securityRepository.findByLogin(registrationDto.getLogin());
-        if(security.isPresent()){
+        if (security.isPresent()) {
             throw new SameUserInDatabase(registrationDto.getLogin());
         }
         Users user = new Users();
         user.setUsername(registrationDto.getUsername());
         user.setCreated(Timestamp.valueOf(LocalDateTime.now()));
         user.setChanged(Timestamp.valueOf(LocalDateTime.now()));
-        if(groupRepository.findByName(registrationDto.getGroup()).isPresent()){
+        if (groupRepository.findByName(registrationDto.getGroup()).isPresent()) {
             user.setGroupId(groupRepository.findByName(registrationDto.getGroup()).get().getId());
         }
         Users savedUser = usersRepository.save(user);
@@ -66,5 +67,57 @@ public class SecurityService {
             return Optional.of(jwtUtils.generateToken(authRequestDto.getLogin()));
         }
         return Optional.empty();
+    }
+
+    public Boolean giveAdmin(GiveRoleDto giveRoleDto) {
+        Optional<Security> securityOptional = securityRepository.findById(giveRoleDto.getId());
+        if (securityOptional.isPresent()) {
+            Security security = securityOptional.get();
+            if (security.getRole().equals(Roles.STUDENT) || security.getRole().equals(Roles.TEACHER)) {
+                security.setRole(Roles.ADMIN);
+            }
+            Security savedSecurity = securityRepository.saveAndFlush(security);
+            return savedSecurity.equals(security);
+        }
+        return false;
+    }
+
+    public Boolean giveTeacher(GiveRoleDto giveRoleDto) {
+        Optional<Security> securityOptional = securityRepository.findById(giveRoleDto.getId());
+        if (securityOptional.isPresent()) {
+            Security security = securityOptional.get();
+            if (security.getRole().equals(Roles.STUDENT)) {
+                security.setRole(Roles.TEACHER);
+            }
+            Security savedSecurity = securityRepository.saveAndFlush(security);
+            return savedSecurity.equals(security);
+        }
+        return false;
+    }
+
+    public Boolean downgradeAdmin(GiveRoleDto giveRoleDto) {
+        Optional<Security> securityOptional = securityRepository.findById(giveRoleDto.getId());
+        if (securityOptional.isPresent()) {
+            Security security = securityOptional.get();
+            if (security.getRole().equals(Roles.ADMIN)) {
+                security.setRole(Roles.TEACHER);
+            }
+            Security savedSecurity = securityRepository.saveAndFlush(security);
+            return savedSecurity.equals(security);
+        }
+        return false;
+    }
+
+    public Boolean downgradeTeacher(GiveRoleDto giveRoleDto) {
+        Optional<Security> securityOptional = securityRepository.findById(giveRoleDto.getId());
+        if (securityOptional.isPresent()) {
+            Security security = securityOptional.get();
+            if (security.getRole().equals(Roles.TEACHER)) {
+                security.setRole(Roles.STUDENT);
+            }
+            Security savedSecurity = securityRepository.saveAndFlush(security);
+            return savedSecurity.equals(security);
+        }
+        return false;
     }
 }
