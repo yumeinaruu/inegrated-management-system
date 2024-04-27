@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.sql.SQLException;
+
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
@@ -20,6 +22,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(SameUserInDatabase.class)
     public ResponseEntity<HttpStatus> handleSameUserInDatabaseException(SameUserInDatabase ex) {
+        log.error("Error occurred: " + ex);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(SQLException.class)
+    public ResponseEntity<HttpStatus> handleSQLException(SQLException ex) {
         log.error("Error occurred: " + ex);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
