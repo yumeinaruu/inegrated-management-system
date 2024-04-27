@@ -3,6 +3,7 @@ package com.yumeinaruu.iis.security.model;
 import com.yumeinaruu.iis.security.model.dto.Roles;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -25,7 +26,7 @@ public class Security {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Roles role;
 
