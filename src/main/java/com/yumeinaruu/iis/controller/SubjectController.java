@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,7 @@ public class SubjectController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<List<Subject>> getAllSubjects() {
         List<Subject> subjects = subjectService.getAllSubjects();
         if (subjects.isEmpty()) {
@@ -44,6 +46,7 @@ public class SubjectController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<Subject> getSubjectById(@PathVariable Long id) {
         Optional<Subject> subject = subjectService.getSubjectById(id);
         if (subject.isPresent()) {
@@ -53,6 +56,7 @@ public class SubjectController {
     }
 
     @GetMapping("/name")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<List<Subject>> getSubjectsSortedByName() {
         List<Subject> subjects = subjectService.getSubjectsSortedByName();
         if (subjects.isEmpty()) {
@@ -62,6 +66,7 @@ public class SubjectController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> createSubject(@RequestBody @Valid SubjectCreateDto subjectCreateDto,
                                                     BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -71,6 +76,7 @@ public class SubjectController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> updateSubject(@RequestBody @Valid SubjectUpdateDto subjectUpdateDto,
                                                     BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -80,6 +86,7 @@ public class SubjectController {
     }
 
     @PutMapping("/name")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> updateSubjectName(@RequestBody @Valid SubjectNameUpdateDto subjectNameUpdateDto,
                                                         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -89,6 +96,7 @@ public class SubjectController {
     }
 
     @PutMapping("/department")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> updateSubjectDepartment(@RequestBody @Valid SubjectDepartmentUpdateDto subjectDepartmentUpdateDto,
                                                               BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
@@ -98,6 +106,7 @@ public class SubjectController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> deleteSubjectById(@PathVariable Long id) {
         return new ResponseEntity<>(subjectService.deleteSubject(id) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }

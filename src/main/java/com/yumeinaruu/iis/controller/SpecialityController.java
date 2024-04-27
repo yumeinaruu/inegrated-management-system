@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,7 @@ public class SpecialityController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<List<Speciality>> getAllSpecialities() {
         List<Speciality> specialities = specialityService.getAllSpecialities();
         if (specialities.isEmpty()) {
@@ -44,6 +46,7 @@ public class SpecialityController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<Speciality> getSpecialityById(@PathVariable Long id) {
         Optional<Speciality> speciality = specialityService.getSpecialityById(id);
         if (speciality.isPresent()) {
@@ -53,6 +56,7 @@ public class SpecialityController {
     }
 
     @GetMapping("/name")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<List<Speciality>> getSpecialitiesSortedByName() {
         List<Speciality> specialities = specialityService.getSpecialitiesSortedByName();
         if (specialities.isEmpty()) {
@@ -62,6 +66,7 @@ public class SpecialityController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> createSpeciality(@RequestBody @Valid SpecialityCreateDto specialityCreateDto,
                                                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -71,6 +76,7 @@ public class SpecialityController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> updateSpeciality(@RequestBody @Valid SpecialityUpdateDto specialityUpdateDto,
                                                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -80,6 +86,7 @@ public class SpecialityController {
     }
 
     @PutMapping("/name")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> updateSpecialityName(@RequestBody @Valid SpecialityUpdateNameDto specialityUpdateNameDto,
                                                            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -89,6 +96,7 @@ public class SpecialityController {
     }
 
     @PutMapping("/faculty")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> updateSpecialityFaculty(@RequestBody @Valid SpecialityUpdateFacultyDto specialityUpdateFacultyDto,
                                                               BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -98,6 +106,7 @@ public class SpecialityController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> deleteSpecialityById(@PathVariable Long id) {
         return new ResponseEntity<>(specialityService.deleteSpeciality(id) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }

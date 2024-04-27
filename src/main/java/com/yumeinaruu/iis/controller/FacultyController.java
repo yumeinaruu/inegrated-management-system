@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ public class FacultyController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<List<Faculty>> getAllFaculties() {
         List<Faculty> faculties = facultyService.getAllFaculties();
         if (faculties.isEmpty()) {
@@ -42,6 +44,7 @@ public class FacultyController {
     }
 
     @GetMapping("/name")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<List<Faculty>> getAllFacultiesSortedByName() {
         List<Faculty> faculties = facultyService.getFacultiesSortedByName();
         if (faculties.isEmpty()) {
@@ -51,6 +54,7 @@ public class FacultyController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<Faculty> getFacultyById(@PathVariable Long id) {
         Optional<Faculty> faculty = facultyService.getFacultyById(id);
         if (faculty.isPresent()) {
@@ -60,6 +64,7 @@ public class FacultyController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> createFaculty(@RequestBody @Valid FacultyCreateDto facultyCreateDto,
                                                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -69,6 +74,7 @@ public class FacultyController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> updateFaculty(@RequestBody @Valid FacultyUpdateDto facultyUpdateDto,
                                                     BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
@@ -78,6 +84,7 @@ public class FacultyController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> deleteFacultyById(@PathVariable Long id) {
         return new ResponseEntity<>(facultyService.deleteFaculty(id) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }

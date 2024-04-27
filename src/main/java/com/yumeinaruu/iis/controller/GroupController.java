@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,7 @@ public class GroupController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<List<Group>> getAllGroups() {
         List<Group> groups = groupService.getAllGroups();
         if (groups.isEmpty()) {
@@ -45,6 +47,7 @@ public class GroupController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<Group> getGroupById(@PathVariable Long id) {
         Optional<Group> group = groupService.getGroupById(id);
         if (group.isPresent()) {
@@ -54,6 +57,7 @@ public class GroupController {
     }
 
     @GetMapping("/name")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<List<Group>> getGroupsSortedByName() {
         List<Group> groups = groupService.getGroupsSortedByName();
         if (groups.isEmpty()) {
@@ -63,6 +67,7 @@ public class GroupController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> createGroup(@RequestBody @Valid GroupCreateDto groupCreateDto,
                                                   BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -72,6 +77,7 @@ public class GroupController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> updateGroup(@RequestBody @Valid GroupUpdateDto groupUpdateDto,
                                                   BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -81,6 +87,7 @@ public class GroupController {
     }
 
     @PutMapping("/name")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> updateGroupName(@RequestBody @Valid GroupNameUpdateDto groupNameUpdateDto,
                                                       BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -90,6 +97,7 @@ public class GroupController {
     }
 
     @PutMapping("/faculty")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> updateFaculty(@RequestBody @Valid GroupFacultyUpdateDto groupFacultyUpdateDto,
                                                     BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -99,6 +107,7 @@ public class GroupController {
     }
 
     @PutMapping("/speciality")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> updateSpeciality(@RequestBody @Valid GroupSpecialityUpdateDto groupSpecialityUpdateDto,
                                                        BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
@@ -108,6 +117,7 @@ public class GroupController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<HttpStatus> deleteGroupById(@PathVariable Long id) {
         return new ResponseEntity<>(groupService.deleteGroup(id) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }

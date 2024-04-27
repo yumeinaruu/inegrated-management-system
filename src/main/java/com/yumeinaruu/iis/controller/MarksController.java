@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,7 @@ public class MarksController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<List<Marks>> getAllMarks() {
         List<Marks> marks = marksService.getAllMarks();
         if (marks.isEmpty()) {
@@ -45,6 +47,7 @@ public class MarksController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<Marks> getMarksById(@PathVariable Long id) {
         Optional<Marks> marks = marksService.getMarkById(id);
         if (marks.isPresent()) {
@@ -54,6 +57,7 @@ public class MarksController {
     }
 
     @GetMapping("/ascending")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<List<Marks>> getMarksAscending() {
         List<Marks> marks = marksService.getMarksAscending();
         if (marks.isEmpty()) {
@@ -63,6 +67,7 @@ public class MarksController {
     }
 
     @GetMapping("/descending")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
     public ResponseEntity<List<Marks>> getMarksDescending() {
         List<Marks> marks = marksService.getMarksDescending();
         if (marks.isEmpty()) {
@@ -72,6 +77,7 @@ public class MarksController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
     public ResponseEntity<HttpStatus> createMarks(@RequestBody @Valid MarksCreateDto marksCreateDto,
                                                   BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -81,6 +87,7 @@ public class MarksController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
     public ResponseEntity<HttpStatus> updateMarks(@RequestBody @Valid MarksUpdateDto marksUpdateDto,
                                                   BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -90,6 +97,7 @@ public class MarksController {
     }
 
     @PutMapping("/mark")
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
     public ResponseEntity<HttpStatus> updateMarksMark(@RequestBody @Valid MarksMarkUpdateDto marksMarkUpdateDto,
                                                       BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -99,6 +107,7 @@ public class MarksController {
     }
 
     @PutMapping("/subject")
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
     public ResponseEntity<HttpStatus> updateMarksSubject(@RequestBody @Valid MarksSubjectUpdateDto marksSubjectUpdateDto,
                                                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -108,6 +117,7 @@ public class MarksController {
     }
 
     @PutMapping("/user")
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
     public ResponseEntity<HttpStatus> updateMarksUser(@RequestBody @Valid MarksUserUpdateDto marksUserUpdateDto,
                                                       BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -117,6 +127,7 @@ public class MarksController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
     public ResponseEntity<HttpStatus> deleteMarkById(@PathVariable Long id) {
         return new ResponseEntity<>(marksService.deleteMarkById(id) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }
