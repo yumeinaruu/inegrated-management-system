@@ -23,12 +23,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SameUserInDatabase.class)
     public ResponseEntity<HttpStatus> handleSameUserInDatabaseException(SameUserInDatabase ex) {
         log.error("Error occurred: " + ex);
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(SQLException.class)
     public ResponseEntity<HttpStatus> handleSQLException(SQLException ex) {
         log.error("Error occurred: " + ex);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<HttpStatus> handleIllegalArgumentException(IllegalArgumentException ex) {
+        log.error("Error occurred: " + ex);
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 }
