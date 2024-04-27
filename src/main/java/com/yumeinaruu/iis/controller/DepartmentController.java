@@ -34,7 +34,7 @@ public class DepartmentController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Department>> getAllDepartments() {
         List<Department> departments = departmentService.getAllDepartments();
         if (departments.isEmpty()) {
@@ -44,7 +44,7 @@ public class DepartmentController {
     }
 
     @GetMapping("/name")
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Department>> getAllDepartmentsSortedByName() {
         List<Department> departments = departmentService.getDepartmentsSortedByName();
         if (departments.isEmpty()) {
@@ -54,7 +54,7 @@ public class DepartmentController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<Department> getDepartmentById(@PathVariable Long id) {
         Optional<Department> department = departmentService.getDepartmentById(id);
         if (department.isPresent()) {
@@ -64,7 +64,7 @@ public class DepartmentController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> createDepartment(@RequestBody @Valid DepartmentDtoCreate departmentDtoCreate,
                                                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -74,7 +74,7 @@ public class DepartmentController {
     }
 
     @PutMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> updateDepartment(@RequestBody @Valid DepartmentDtoUpdate departmentDtoUpdate,
                                                        BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
@@ -84,7 +84,7 @@ public class DepartmentController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> deleteDepartmentById(@PathVariable Long id) {
         return new ResponseEntity<>(departmentService.deleteDepartment(id) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }

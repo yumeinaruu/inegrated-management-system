@@ -34,7 +34,7 @@ public class FacultyController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Faculty>> getAllFaculties() {
         List<Faculty> faculties = facultyService.getAllFaculties();
         if (faculties.isEmpty()) {
@@ -44,7 +44,7 @@ public class FacultyController {
     }
 
     @GetMapping("/name")
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Faculty>> getAllFacultiesSortedByName() {
         List<Faculty> faculties = facultyService.getFacultiesSortedByName();
         if (faculties.isEmpty()) {
@@ -54,7 +54,7 @@ public class FacultyController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<Faculty> getFacultyById(@PathVariable Long id) {
         Optional<Faculty> faculty = facultyService.getFacultyById(id);
         if (faculty.isPresent()) {
@@ -64,7 +64,7 @@ public class FacultyController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> createFaculty(@RequestBody @Valid FacultyCreateDto facultyCreateDto,
                                                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -74,7 +74,7 @@ public class FacultyController {
     }
 
     @PutMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> updateFaculty(@RequestBody @Valid FacultyUpdateDto facultyUpdateDto,
                                                     BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
@@ -84,7 +84,7 @@ public class FacultyController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> deleteFacultyById(@PathVariable Long id) {
         return new ResponseEntity<>(facultyService.deleteFaculty(id) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }

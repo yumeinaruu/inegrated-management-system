@@ -36,7 +36,7 @@ public class UsersController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Users>> getAllUsers() {
         List<Users> users = usersService.getAllUsers();
         if (users.isEmpty()) {
@@ -46,7 +46,7 @@ public class UsersController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<Users> getUserById(@PathVariable Long id) {
         Optional<Users> user = usersService.getUserById(id);
         if (user.isPresent()) {
@@ -56,7 +56,7 @@ public class UsersController {
     }
 
     @GetMapping("/name")
-    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Users>> getUsersSortedByUsername() {
         List<Users> users = usersService.getUsersSortedByUsername();
         if (users.isEmpty()) {
@@ -66,7 +66,7 @@ public class UsersController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> createUser(@RequestBody @Valid UsersCreateDto usersCreateDto,
                                                  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -77,7 +77,7 @@ public class UsersController {
 
     @PutMapping
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> updateUser(@RequestBody @Valid UsersUpdateDto usersUpdateDto,
                                                  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -87,7 +87,7 @@ public class UsersController {
     }
 
     @PutMapping("/name")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> updateUserUsername(@RequestBody @Valid UsersUsernameUpdateDto usersUsernameUpdateDto,
                                                            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -97,7 +97,7 @@ public class UsersController {
     }
 
     @PutMapping("/group")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> updateUserGroup(@RequestBody @Valid UsersUpdateGroupDto usersUpdateGroupDto,
                                                       BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -107,7 +107,7 @@ public class UsersController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> deleteUserById(@PathVariable Long id) {
         return new ResponseEntity<>(usersService.deleteUser(id) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }
