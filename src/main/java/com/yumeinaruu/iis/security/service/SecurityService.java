@@ -9,6 +9,7 @@ import com.yumeinaruu.iis.security.model.dto.AuthRequestDto;
 import com.yumeinaruu.iis.security.model.dto.GiveRoleDto;
 import com.yumeinaruu.iis.security.model.dto.RegistrationDto;
 import com.yumeinaruu.iis.security.model.dto.Roles;
+import com.yumeinaruu.iis.security.model.dto.NotStudentRegistrationDto;
 import com.yumeinaruu.iis.security.repository.SecurityRepository;
 import com.yumeinaruu.iis.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,54 @@ public class SecurityService {
                 "Registration in integrated management system", emailService.getRegistrationBody()
         + "\n Your login: " + registrationDto.getLogin() + "\n Your password: " + registrationDto.getPassword() +
                 "\n Don't share to anyone this information");
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void registrationForTeachers(NotStudentRegistrationDto registrationDto) {
+        Optional<Security> security = securityRepository.findByLogin(registrationDto.getLogin());
+        if (security.isPresent()) {
+            throw new SameUserInDatabase(registrationDto.getLogin());
+        }
+        Users user = new Users();
+        user.setUsername(registrationDto.getUsername());
+        user.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+        user.setChanged(Timestamp.valueOf(LocalDateTime.now()));
+        Users savedUser = usersRepository.save(user);
+
+        Security userSecurity = new Security();
+        userSecurity.setLogin(registrationDto.getLogin());
+        userSecurity.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
+        userSecurity.setRole(Roles.TEACHER);
+        userSecurity.setUserId(savedUser.getId());
+        securityRepository.save(userSecurity);
+        emailService.sendEmailNoAttachment(userSecurity.getLogin(), emailService.getCc(),
+                "Registration in integrated management system", emailService.getRegistrationBody()
+                        + "\n Your login: " + registrationDto.getLogin() + "\n Your password: " + registrationDto.getPassword() +
+                        "\n Don't share to anyone this information");
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void registrationForAdmin(NotStudentRegistrationDto registrationDto) {
+        Optional<Security> security = securityRepository.findByLogin(registrationDto.getLogin());
+        if (security.isPresent()) {
+            throw new SameUserInDatabase(registrationDto.getLogin());
+        }
+        Users user = new Users();
+        user.setUsername(registrationDto.getUsername());
+        user.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+        user.setChanged(Timestamp.valueOf(LocalDateTime.now()));
+        Users savedUser = usersRepository.save(user);
+
+        Security userSecurity = new Security();
+        userSecurity.setLogin(registrationDto.getLogin());
+        userSecurity.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
+        userSecurity.setRole(Roles.ADMIN);
+        userSecurity.setUserId(savedUser.getId());
+        securityRepository.save(userSecurity);
+        emailService.sendEmailNoAttachment(userSecurity.getLogin(), emailService.getCc(),
+                "Registration in integrated management system", emailService.getRegistrationBody()
+                        + "\n Your login: " + registrationDto.getLogin() + "\n Your password: " + registrationDto.getPassword() +
+                        "\n Don't share to anyone this information");
     }
 
     public Optional<String> generateToken(AuthRequestDto authRequestDto) {

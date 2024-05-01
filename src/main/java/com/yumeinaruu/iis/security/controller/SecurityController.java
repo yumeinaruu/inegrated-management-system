@@ -4,6 +4,7 @@ import com.yumeinaruu.iis.exception.custom_exception.CustomValidationException;
 import com.yumeinaruu.iis.security.model.dto.AuthRequestDto;
 import com.yumeinaruu.iis.security.model.dto.AuthResponseDto;
 import com.yumeinaruu.iis.security.model.dto.GiveRoleDto;
+import com.yumeinaruu.iis.security.model.dto.NotStudentRegistrationDto;
 import com.yumeinaruu.iis.security.model.dto.RegistrationDto;
 import com.yumeinaruu.iis.security.service.SecurityService;
 import jakarta.validation.Valid;
@@ -38,6 +39,28 @@ public class SecurityController {
             throw new CustomValidationException(bindingResult.getAllErrors().toString());
         }
         securityService.registration(registrationDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/registration/teacher")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
+    public ResponseEntity<HttpStatus> registrationForTeachers(@RequestBody @Valid NotStudentRegistrationDto registrationDto,
+                                                   BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new CustomValidationException(bindingResult.getAllErrors().toString());
+        }
+        securityService.registrationForTeachers(registrationDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/registration/admin")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
+    public ResponseEntity<HttpStatus> registrationForAdmin(@RequestBody @Valid NotStudentRegistrationDto registrationDto,
+                                                              BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new CustomValidationException(bindingResult.getAllErrors().toString());
+        }
+        securityService.registrationForAdmin(registrationDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
