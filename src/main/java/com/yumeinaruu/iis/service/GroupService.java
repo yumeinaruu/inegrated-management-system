@@ -40,11 +40,11 @@ public class GroupService {
     public Boolean createGroup(GroupCreateDto groupCreateDto) {
         Group group = new Group();
         group.setName(groupCreateDto.getName());
-        if (facultyRepository.findByName(groupCreateDto.getFaculty()).isPresent()) {
-            group.setFacultyId(facultyRepository.findByName(groupCreateDto.getFaculty()).get().getId());
+        if (facultyRepository.findByName(groupCreateDto.getFaculty().getName()).isPresent()) {
+            group.setFacultyId(facultyRepository.findByName(groupCreateDto.getFaculty().getName()).get());
         }
-        if (specialityRepository.findByName(groupCreateDto.getSpeciality()).isPresent()) {
-            group.setSpecialityId(specialityRepository.findByName(groupCreateDto.getSpeciality()).get().getId());
+        if (specialityRepository.findByName(groupCreateDto.getSpeciality().getName()).isPresent()) {
+            group.setSpecialityId(specialityRepository.findByName(groupCreateDto.getSpeciality().getName()).get());
         }
         Group savedGroup = groupRepository.save(group);
         return getGroupById(savedGroup.getId()).isPresent();
@@ -55,11 +55,11 @@ public class GroupService {
         if (optionalGroup.isPresent()) {
             Group group = optionalGroup.get();
             group.setName(groupUpdateDto.getName());
-            if (facultyRepository.findByName(groupUpdateDto.getFaculty()).isPresent()) {
-                group.setFacultyId(facultyRepository.findByName(groupUpdateDto.getFaculty()).get().getId());
+            if (facultyRepository.findByName(groupUpdateDto.getFaculty().getName()).isPresent()) {
+                group.setFacultyId(facultyRepository.findByName(groupUpdateDto.getFaculty().getName()).get());
             }
-            if (specialityRepository.findByName(groupUpdateDto.getSpeciality()).isPresent()) {
-                group.setSpecialityId(specialityRepository.findByName(groupUpdateDto.getSpeciality()).get().getId());
+            if (specialityRepository.findByName(groupUpdateDto.getSpeciality().getName()).isPresent()) {
+                group.setSpecialityId(specialityRepository.findByName(groupUpdateDto.getSpeciality().getName()).get());
             }
             Group updatedGroup = groupRepository.saveAndFlush(group);
             return updatedGroup.equals(group);
@@ -82,8 +82,8 @@ public class GroupService {
         Optional<Group> optionalGroup = groupRepository.findById(groupFacultyUpdateDto.getId());
         if (optionalGroup.isPresent()) {
             Group group = optionalGroup.get();
-            if (facultyRepository.findByName(groupFacultyUpdateDto.getFaculty()).isPresent()) {
-                group.setFacultyId(facultyRepository.findByName(groupFacultyUpdateDto.getFaculty()).get().getId());
+            if (facultyRepository.findByName(groupFacultyUpdateDto.getFaculty().getName()).isPresent()) {
+                group.setFacultyId(facultyRepository.findByName(groupFacultyUpdateDto.getFaculty().getName()).get());
             }
             Group updatedGroup = groupRepository.saveAndFlush(group);
             return updatedGroup.equals(group);
@@ -95,8 +95,8 @@ public class GroupService {
         Optional<Group> optionalGroup = groupRepository.findById(groupSpecialityUpdateDto.getId());
         if (optionalGroup.isPresent()) {
             Group group = optionalGroup.get();
-            if (specialityRepository.findByName(groupSpecialityUpdateDto.getSpeciality()).isPresent()) {
-                group.setSpecialityId(specialityRepository.findByName(groupSpecialityUpdateDto.getSpeciality()).get().getId());
+            if (specialityRepository.findByName(groupSpecialityUpdateDto.getSpeciality().getName()).isPresent()) {
+                group.setSpecialityId(specialityRepository.findByName(groupSpecialityUpdateDto.getSpeciality().getName()).get());
             }
             Group updatedGroup = groupRepository.saveAndFlush(group);
             return updatedGroup.equals(group);

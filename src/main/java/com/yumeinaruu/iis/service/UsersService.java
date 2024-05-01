@@ -42,8 +42,8 @@ public class UsersService {
     public Boolean createUser(UsersCreateDto usersCreateDto) {
         Users user = new Users();
         user.setUsername(usersCreateDto.getUsername());
-        if (groupRepository.findByName(usersCreateDto.getGroup()).isPresent()) {
-            user.setGroupId(groupRepository.findByName(usersCreateDto.getGroup()).get().getId());
+        if (groupRepository.findByName(usersCreateDto.getGroup().getName()).isPresent()) {
+            user.setGroupId(groupRepository.findByName(usersCreateDto.getGroup().getName()).get());
         }
         user.setCreated(Timestamp.valueOf(LocalDateTime.now()));
         user.setChanged(Timestamp.valueOf(LocalDateTime.now()));
@@ -56,8 +56,8 @@ public class UsersService {
         if (optionalUser.isPresent()) {
             Users user = optionalUser.get();
             user.setUsername(usersUpdateDto.getUsername());
-            if (groupRepository.findByName(usersUpdateDto.getGroup()).isPresent()) {
-                user.setGroupId(groupRepository.findByName(usersUpdateDto.getGroup()).get().getId());
+            if (groupRepository.findByName(usersUpdateDto.getGroup().getName()).isPresent()) {
+                user.setGroupId(groupRepository.findByName(usersUpdateDto.getGroup().getName()).get());
             }
             user.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Users savedUser = usersRepository.save(user);
@@ -82,8 +82,8 @@ public class UsersService {
         Optional<Users> optionalUser = usersRepository.findById(usersUpdateGroupDto.getId());
         if (optionalUser.isPresent()) {
             Users user = optionalUser.get();
-            if (groupRepository.findByName(usersUpdateGroupDto.getGroup()).isPresent()) {
-                user.setGroupId(groupRepository.findByName(usersUpdateGroupDto.getGroup()).get().getId());
+            if (groupRepository.findByName(usersUpdateGroupDto.getGroup().getName()).isPresent()) {
+                user.setGroupId(groupRepository.findByName(usersUpdateGroupDto.getGroup().getName()).get());
             }
             user.setChanged(Timestamp.valueOf(LocalDateTime.now()));
             Users savedUser = usersRepository.save(user);

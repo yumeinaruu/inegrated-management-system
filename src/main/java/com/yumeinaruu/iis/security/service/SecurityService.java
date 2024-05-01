@@ -48,7 +48,7 @@ public class SecurityService {
         user.setCreated(Timestamp.valueOf(LocalDateTime.now()));
         user.setChanged(Timestamp.valueOf(LocalDateTime.now()));
         if (groupRepository.findByName(registrationDto.getGroup()).isPresent()) {
-            user.setGroupId(groupRepository.findByName(registrationDto.getGroup()).get().getId());
+            user.setGroupId(groupRepository.findByName(registrationDto.getGroup()).get());
         }
         Users savedUser = usersRepository.save(user);
 

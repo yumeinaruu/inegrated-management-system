@@ -51,8 +51,8 @@ public class MarksService {
         if (subjectRepository.findByName(marksCreateDto.getSubject()).isPresent()) {
             marks.setSubjectId(subjectRepository.findByName(marksCreateDto.getSubject()).get().getId());
         }
-        if(usersRepository.findByUsername(marksCreateDto.getUser()).isPresent()){
-            marks.setUserId(usersRepository.findByUsername(marksCreateDto.getUser()).get().getId());
+        if(usersRepository.findByUsername(marksCreateDto.getUser().getUsername()).isPresent()){
+            marks.setUserId(usersRepository.findByUsername(marksCreateDto.getUser().getUsername()).get());
         }
         Marks savedMarks = marksRepository.save(marks);
         return getMarkById(savedMarks.getId()).isPresent();
@@ -66,8 +66,8 @@ public class MarksService {
             if (subjectRepository.findByName(marksUpdateDto.getSubject()).isPresent()) {
                 marks.setSubjectId(subjectRepository.findByName(marksUpdateDto.getSubject()).get().getId());
             }
-            if(usersRepository.findByUsername(marksUpdateDto.getUser()).isPresent()){
-                marks.setUserId(usersRepository.findByUsername(marksUpdateDto.getUser()).get().getId());
+            if(usersRepository.findByUsername(marksUpdateDto.getUser().getUsername()).isPresent()){
+                marks.setUserId(usersRepository.findByUsername(marksUpdateDto.getUser().getUsername()).get());
             }
             Marks savedMarks = marksRepository.save(marks);
             return getMarkById(savedMarks.getId()).isPresent();
@@ -103,8 +103,8 @@ public class MarksService {
         Optional<Marks> optionalMarks = marksRepository.findById(marksUserUpdateDto.getId());
         if (optionalMarks.isPresent()) {
             Marks marks = optionalMarks.get();
-            if(usersRepository.findByUsername(marksUserUpdateDto.getUser()).isPresent()){
-                marks.setUserId(usersRepository.findByUsername(marksUserUpdateDto.getUser()).get().getId());
+            if(usersRepository.findByUsername(marksUserUpdateDto.getUser().getUsername()).isPresent()){
+                marks.setUserId(usersRepository.findByUsername(marksUserUpdateDto.getUser().getUsername()).get());
             }
             Marks savedMarks = marksRepository.save(marks);
             return getMarkById(savedMarks.getId()).isPresent();
