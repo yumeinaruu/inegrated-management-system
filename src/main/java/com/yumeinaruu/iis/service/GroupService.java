@@ -37,6 +37,10 @@ public class GroupService {
         return groupRepository.findById(id);
     }
 
+    public Optional<Group> getGroupByName(String name) {
+        return groupRepository.findByName(name);
+    }
+
     public Boolean createGroup(GroupCreateDto groupCreateDto) {
         Group group = new Group();
         group.setName(groupCreateDto.getName());

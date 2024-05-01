@@ -35,6 +35,10 @@ public class UsersService {
         return usersRepository.findById(id);
     }
 
+    public Optional<Users> getUserByUsername(String username) {
+        return usersRepository.findByUsername(username);
+    }
+
     public List<Users> getUsersSortedByUsername() {
         return usersRepository.findAll(Sort.by("username"));
     }

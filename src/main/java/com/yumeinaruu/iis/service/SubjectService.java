@@ -33,6 +33,10 @@ public class SubjectService {
         return subjectRepository.findById(id);
     }
 
+    public Optional<Subject> getSubjectByName(String name) {
+        return subjectRepository.findByName(name);
+    }
+
     public List<Subject> getSubjectsSortedByName() {
         return subjectRepository.findAll(Sort.by("name"));
     }

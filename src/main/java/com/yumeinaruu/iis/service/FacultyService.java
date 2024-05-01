@@ -28,6 +28,10 @@ public class FacultyService {
         return facultyRepository.findById(id);
     }
 
+    public Optional<Faculty> getFacultyByName(String name) {
+        return facultyRepository.findByName(name);
+    }
+
     public Boolean createFaculty(FacultyCreateDto facultyCreateDto) {
         Faculty faculty = new Faculty();
         faculty.setName(facultyCreateDto.getName());

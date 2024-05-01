@@ -33,6 +33,10 @@ public class SpecialityService {
         return specialityRepository.findById(id);
     }
 
+    public Optional<Speciality> getSpecialityByName(String name) {
+        return specialityRepository.findByName(name);
+    }
+
     public List<Speciality> getSpecialitiesSortedByName() {
         return specialityRepository.findAll(Sort.by("name"));
     }
