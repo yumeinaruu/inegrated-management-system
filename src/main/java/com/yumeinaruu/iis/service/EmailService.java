@@ -16,8 +16,12 @@ public class EmailService {
     @Value("${spring.mail.username}")
     public String fromEmail;
 
+    private final JavaMailSender mailSender;
+
     @Autowired
-    private JavaMailSender mailSender;
+    public EmailService(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
 
     public String sendEmail(MultipartFile[] file, String to, String[] cc, String subject, String body) {
         try {
