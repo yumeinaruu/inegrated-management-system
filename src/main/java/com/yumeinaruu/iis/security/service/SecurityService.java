@@ -63,7 +63,9 @@ public class SecurityService {
         userSecurity.setUserId(savedUser.getId());
         securityRepository.save(userSecurity);
         emailService.sendEmailNoAttachment(userSecurity.getLogin(), emailService.getCc(),
-                "Registration in integrated management system", emailService.getRegistrationBody());
+                "Registration in integrated management system", emailService.getRegistrationBody()
+        + "\n Your login: " + registrationDto.getLogin() + "\n Your password: " + registrationDto.getPassword() +
+                "\n Don't share to anyone this information");
     }
 
     public Optional<String> generateToken(AuthRequestDto authRequestDto) {
