@@ -40,8 +40,8 @@ public class SpecialityService {
     public Boolean createSpeciality(SpecialityCreateDto specialityCreateDto) {
         Speciality speciality = new Speciality();
         speciality.setName(specialityCreateDto.getName());
-        if (facultyRepository.findByName(specialityCreateDto.getFaculty()).isPresent()) {
-            speciality.setFacultyId(facultyRepository.findByName(specialityCreateDto.getFaculty()).get().getId());
+        if (facultyRepository.findByName(specialityCreateDto.getFaculty().getName()).isPresent()) {
+            speciality.setFacultyId(facultyRepository.findByName(specialityCreateDto.getFaculty().getName()).get());
         }
         Speciality savedSpeciality = specialityRepository.save(speciality);
         return getSpecialityById(savedSpeciality.getId()).isPresent();
@@ -52,8 +52,8 @@ public class SpecialityService {
         if (optionalSpeciality.isPresent()) {
             Speciality speciality = optionalSpeciality.get();
             speciality.setName(specialityUpdateDto.getName());
-            if (facultyRepository.findByName(specialityUpdateDto.getFaculty()).isPresent()) {
-                speciality.setFacultyId(facultyRepository.findByName(specialityUpdateDto.getFaculty()).get().getId());
+            if (facultyRepository.findByName(specialityUpdateDto.getFaculty().getName()).isPresent()) {
+                speciality.setFacultyId(facultyRepository.findByName(specialityUpdateDto.getFaculty().getName()).get());
             }
             Speciality savedSpeciality = specialityRepository.save(speciality);
             return savedSpeciality.equals(speciality);
@@ -76,8 +76,8 @@ public class SpecialityService {
         Optional<Speciality> optionalSpeciality = specialityRepository.findById(specialityUpdateFacultyDto.getId());
         if (optionalSpeciality.isPresent()) {
             Speciality speciality = optionalSpeciality.get();
-            if (facultyRepository.findByName(specialityUpdateFacultyDto.getFaculty()).isPresent()) {
-                speciality.setFacultyId(facultyRepository.findByName(specialityUpdateFacultyDto.getFaculty()).get().getId());
+            if (facultyRepository.findByName(specialityUpdateFacultyDto.getFaculty().getName()).isPresent()) {
+                speciality.setFacultyId(facultyRepository.findByName(specialityUpdateFacultyDto.getFaculty().getName()).get());
             }
             Speciality savedSpeciality = specialityRepository.save(speciality);
             return savedSpeciality.equals(speciality);

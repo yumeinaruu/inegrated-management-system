@@ -1,7 +1,5 @@
-package com.yumeinaruu.iis.model.dto.speciality;
+package com.yumeinaruu.iis.model.dto.faculty;
 
-import com.yumeinaruu.iis.model.dto.faculty.FacultyForSpecialityDto;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -13,11 +11,8 @@ import org.springframework.stereotype.Component;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SpecialityUpdateFacultyDto {
+public class FacultyForGroupDto {
     @NotNull
-    @Min(1)
-    private Long id;
-
-    @NotNull
-    private FacultyForSpecialityDto faculty;
+    @Size(min = 1, max = 50)
+    private String name;
 }

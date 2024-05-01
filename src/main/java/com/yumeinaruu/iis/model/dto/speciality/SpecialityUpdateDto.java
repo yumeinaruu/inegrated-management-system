@@ -1,5 +1,6 @@
 package com.yumeinaruu.iis.model.dto.speciality;
 
+import com.yumeinaruu.iis.model.dto.faculty.FacultyForSpecialityDto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -22,6 +23,5 @@ public class SpecialityUpdateDto {
     private String name;
 
     @NotNull
-    @Size(min = 1, max = 50)
-    private String faculty;
+    private FacultyForSpecialityDto faculty;
 }

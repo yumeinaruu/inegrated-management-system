@@ -1,5 +1,6 @@
 package com.yumeinaruu.iis.model.dto.group;
 
+import com.yumeinaruu.iis.model.dto.speciality.SpecialityForGroupDto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -18,6 +19,5 @@ public class GroupSpecialityUpdateDto {
     private Long id;
 
     @NotNull
-    @Size(min = 1, max = 50)
-    private String speciality;
+    private SpecialityForGroupDto speciality;
 }

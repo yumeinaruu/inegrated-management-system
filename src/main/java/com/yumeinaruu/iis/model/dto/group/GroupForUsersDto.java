@@ -1,7 +1,5 @@
 package com.yumeinaruu.iis.model.dto.group;
 
-import com.yumeinaruu.iis.model.dto.faculty.FacultyForGroupDto;
-import com.yumeinaruu.iis.model.dto.speciality.SpecialityForGroupDto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -13,14 +11,8 @@ import org.springframework.stereotype.Component;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GroupCreateDto {
+public class GroupForUsersDto {
     @NotNull
     @Size(min = 1, max = 50)
     private String name;
-
-    @NotNull
-    private FacultyForGroupDto faculty;
-
-    @NotNull
-    private SpecialityForGroupDto speciality;
 }

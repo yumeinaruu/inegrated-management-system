@@ -1,5 +1,8 @@
 package com.yumeinaruu.iis.model.dto.marks;
 
+import com.yumeinaruu.iis.model.Users;
+import com.yumeinaruu.iis.model.dto.users.UsersCreateDto;
+import com.yumeinaruu.iis.model.dto.users.UsersForMarkDto;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -24,6 +27,5 @@ public class MarksCreateDto {
     private String subject;
 
     @NotNull
-    @Size(min = 1, max = 50)
-    private String user;
+    private UsersForMarkDto user;
 }
