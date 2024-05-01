@@ -10,6 +10,7 @@ import com.yumeinaruu.iis.security.model.dto.GiveRoleDto;
 import com.yumeinaruu.iis.security.model.dto.RegistrationDto;
 import com.yumeinaruu.iis.security.model.dto.Roles;
 import com.yumeinaruu.iis.security.repository.SecurityRepository;
+import com.yumeinaruu.iis.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,15 +27,18 @@ public class SecurityService {
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
+    private final EmailService emailService;
 
     @Autowired
     public SecurityService(SecurityRepository securityRepository, UsersRepository usersRepository,
-                           GroupRepository groupRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
+                           GroupRepository groupRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils,
+                           EmailService emailService) {
         this.securityRepository = securityRepository;
         this.usersRepository = usersRepository;
         this.groupRepository = groupRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
+        this.emailService = emailService;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -58,6 +62,8 @@ public class SecurityService {
         userSecurity.setRole(Roles.STUDENT);
         userSecurity.setUserId(savedUser.getId());
         securityRepository.save(userSecurity);
+        emailService.sendEmailNoAttachment(userSecurity.getLogin(), emailService.getCc(),
+                "Registration in integrated management system", emailService.getRegistrationBody());
     }
 
     public Optional<String> generateToken(AuthRequestDto authRequestDto) {
