@@ -45,8 +45,8 @@ public class UsersController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN', 'SUPERADMIN')")
+    @GetMapping("/id/{id}")
+    @PreAuthorize(("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')"))
     public ResponseEntity<Users> getUserById(@PathVariable Long id) {
         Optional<Users> user = usersService.getUserById(id);
         if (user.isPresent()) {
@@ -55,7 +55,17 @@ public class UsersController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/name")
+    @GetMapping("/name/{name}")
+    @PreAuthorize(("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')"))
+    public ResponseEntity<Users> getUserByName(@PathVariable String name) {
+        Optional<Users> user = usersService.getUserByUsername(name);
+        if (user.isPresent()) {
+            return new ResponseEntity<>(user.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/name-sort")
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Users>> getUsersSortedByUsername() {
         List<Users> users = usersService.getUsersSortedByUsername();

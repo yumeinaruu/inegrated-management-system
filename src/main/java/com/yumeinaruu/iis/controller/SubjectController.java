@@ -45,7 +45,7 @@ public class SubjectController {
         return new ResponseEntity<>(subjects, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<Subject> getSubjectById(@PathVariable Long id) {
         Optional<Subject> subject = subjectService.getSubjectById(id);
@@ -55,7 +55,17 @@ public class SubjectController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/name")
+    @GetMapping("/name/{name}")
+    @PreAuthorize(("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')"))
+    public ResponseEntity<Subject> getSubjectByName(@PathVariable String name) {
+        Optional<Subject> subject = subjectService.getSubjectByName(name);
+        if (subject.isPresent()) {
+            return new ResponseEntity<>(subject.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/name-sorted")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Subject>> getSubjectsSortedByName() {
         List<Subject> subjects = subjectService.getSubjectsSortedByName();

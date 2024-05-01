@@ -43,7 +43,7 @@ public class DepartmentController {
         return new ResponseEntity<>(departments, HttpStatus.OK);
     }
 
-    @GetMapping("/name")
+    @GetMapping("/name-sort")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Department>> getAllDepartmentsSortedByName() {
         List<Department> departments = departmentService.getDepartmentsSortedByName();
@@ -53,10 +53,20 @@ public class DepartmentController {
         return new ResponseEntity<>(departments, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<Department> getDepartmentById(@PathVariable Long id) {
         Optional<Department> department = departmentService.getDepartmentById(id);
+        if (department.isPresent()) {
+            return new ResponseEntity<>(department.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/name/{name}")
+    @PreAuthorize(("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')"))
+    public ResponseEntity<Department> getDepartmentByName(@PathVariable String name) {
+        Optional<Department> department = departmentService.getDepartmentByName(name);
         if (department.isPresent()) {
             return new ResponseEntity<>(department.get(), HttpStatus.OK);
         }

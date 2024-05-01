@@ -43,7 +43,7 @@ public class FacultyController {
         return new ResponseEntity<>(faculties, HttpStatus.OK);
     }
 
-    @GetMapping("/name")
+    @GetMapping("/name-sort")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Faculty>> getAllFacultiesSortedByName() {
         List<Faculty> faculties = facultyService.getFacultiesSortedByName();
@@ -53,7 +53,7 @@ public class FacultyController {
         return new ResponseEntity<>(faculties, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<Faculty> getFacultyById(@PathVariable Long id) {
         Optional<Faculty> faculty = facultyService.getFacultyById(id);
@@ -63,10 +63,20 @@ public class FacultyController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/name/{name}")
+    @PreAuthorize(("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')"))
+    public ResponseEntity<Faculty> getFacultyByName(@PathVariable String name) {
+        Optional<Faculty> faculty = facultyService.getFacultyByName(name);
+        if (faculty.isPresent()) {
+            return new ResponseEntity<>(faculty.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> createFaculty(@RequestBody @Valid FacultyCreateDto facultyCreateDto,
-                                                       BindingResult bindingResult) {
+                                                    BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new CustomValidationException(bindingResult.getAllErrors().toString());
         }
@@ -77,7 +87,7 @@ public class FacultyController {
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> updateFaculty(@RequestBody @Valid FacultyUpdateDto facultyUpdateDto,
                                                     BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             throw new CustomValidationException(bindingResult.getAllErrors().toString());
         }
         return new ResponseEntity<>(facultyService.updateFaculty(facultyUpdateDto) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);

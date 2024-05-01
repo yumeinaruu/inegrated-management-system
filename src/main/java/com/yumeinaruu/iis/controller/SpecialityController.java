@@ -45,7 +45,7 @@ public class SpecialityController {
         return new ResponseEntity<>(specialities, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<Speciality> getSpecialityById(@PathVariable Long id) {
         Optional<Speciality> speciality = specialityService.getSpecialityById(id);
@@ -55,7 +55,17 @@ public class SpecialityController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/name")
+    @GetMapping("/name/{name}")
+    @PreAuthorize(("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')"))
+    public ResponseEntity<Speciality> getSpecialityByName(@PathVariable String name) {
+        Optional<Speciality> speciality = specialityService.getSpecialityByName(name);
+        if (speciality.isPresent()) {
+            return new ResponseEntity<>(speciality.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/name-sorted")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Speciality>> getSpecialitiesSortedByName() {
         List<Speciality> specialities = specialityService.getSpecialitiesSortedByName();
