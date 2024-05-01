@@ -31,6 +31,7 @@ public class SecurityController {
     }
 
     @PostMapping("/registration")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> registration(@RequestBody @Valid RegistrationDto registrationDto,
                                                    BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
