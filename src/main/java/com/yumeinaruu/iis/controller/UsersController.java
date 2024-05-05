@@ -7,6 +7,7 @@ import com.yumeinaruu.iis.model.dto.users.UsersUpdateDto;
 import com.yumeinaruu.iis.model.dto.users.UsersUpdateGroupDto;
 import com.yumeinaruu.iis.model.dto.users.UsersUsernameUpdateDto;
 import com.yumeinaruu.iis.service.UsersService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
+@SecurityRequirement(name = "Bearer Authentication")
 public class UsersController {
     private final UsersService usersService;
 

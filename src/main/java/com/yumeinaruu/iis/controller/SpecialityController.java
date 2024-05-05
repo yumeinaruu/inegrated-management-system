@@ -7,6 +7,7 @@ import com.yumeinaruu.iis.model.dto.speciality.SpecialityUpdateDto;
 import com.yumeinaruu.iis.model.dto.speciality.SpecialityUpdateFacultyDto;
 import com.yumeinaruu.iis.model.dto.speciality.SpecialityUpdateNameDto;
 import com.yumeinaruu.iis.service.SpecialityService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/speciality")
+@SecurityRequirement(name = "Bearer Authentication")
 public class SpecialityController {
     private final SpecialityService specialityService;
 

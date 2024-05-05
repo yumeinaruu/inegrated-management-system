@@ -8,6 +8,7 @@ import com.yumeinaruu.iis.model.dto.marks.MarksSubjectUpdateDto;
 import com.yumeinaruu.iis.model.dto.marks.MarksUpdateDto;
 import com.yumeinaruu.iis.model.dto.marks.MarksUserUpdateDto;
 import com.yumeinaruu.iis.service.MarksService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/marks")
+@SecurityRequirement(name = "Bearer Authentication")
 public class MarksController {
     private final MarksService marksService;
 

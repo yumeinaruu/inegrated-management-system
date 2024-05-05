@@ -5,6 +5,7 @@ import com.yumeinaruu.iis.model.Faculty;
 import com.yumeinaruu.iis.model.dto.faculty.FacultyCreateDto;
 import com.yumeinaruu.iis.model.dto.faculty.FacultyUpdateDto;
 import com.yumeinaruu.iis.service.FacultyService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/faculty")
+@SecurityRequirement(name = "Bearer Authentication")
 public class FacultyController {
     private final FacultyService facultyService;
 

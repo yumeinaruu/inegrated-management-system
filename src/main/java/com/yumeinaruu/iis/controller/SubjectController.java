@@ -7,6 +7,7 @@ import com.yumeinaruu.iis.model.dto.subject.SubjectDepartmentUpdateDto;
 import com.yumeinaruu.iis.model.dto.subject.SubjectNameUpdateDto;
 import com.yumeinaruu.iis.model.dto.subject.SubjectUpdateDto;
 import com.yumeinaruu.iis.service.SubjectService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/subject")
+@SecurityRequirement(name = "Bearer Authentication")
 public class SubjectController {
     private final SubjectService subjectService;
 

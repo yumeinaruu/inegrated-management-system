@@ -8,6 +8,7 @@ import com.yumeinaruu.iis.model.dto.group.GroupNameUpdateDto;
 import com.yumeinaruu.iis.model.dto.group.GroupSpecialityUpdateDto;
 import com.yumeinaruu.iis.model.dto.group.GroupUpdateDto;
 import com.yumeinaruu.iis.service.GroupService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/group")
+@SecurityRequirement(name = "Bearer Authentication")
 public class GroupController {
     private final GroupService groupService;
 
