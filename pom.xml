@@ -14,6 +14,7 @@
     <name>iis</name>
     <description>iis</description>
     <properties>
+        <mainClass>java.com.yumeinaruu.iis.IisApplication</mainClass>
         <java.version>17</java.version>
     </properties>
     <dependencies>
