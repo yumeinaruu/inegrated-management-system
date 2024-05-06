@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  app:
+    image: 'yumeinaruu/iis:v1'
+    build:
+      context: .
+    container_name: lolkek
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/iis_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123
+
+  db:
+    image: 'postgres:16.1'
+    container_name: 'db'
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
