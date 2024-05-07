@@ -13,12 +13,13 @@ import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 @Entity(name = "groups")
 @Data
 @Component
-public class Group {
+public class Group implements Serializable {
     @Id
     @SequenceGenerator(name = "groupIdSeqGen", sequenceName = "group_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "groupIdSeqGen")

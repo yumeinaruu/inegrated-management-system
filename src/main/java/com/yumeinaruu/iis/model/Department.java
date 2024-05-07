@@ -8,10 +8,12 @@ import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Entity(name = "department")
 @Data
 @Component
-public class Department {
+public class Department implements Serializable {
     @Id
     @SequenceGenerator(name = "depIdSeqGen", sequenceName = "department_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "depIdSeqGen")

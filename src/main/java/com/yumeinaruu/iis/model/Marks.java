@@ -11,10 +11,12 @@ import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Entity(name = "marks")
 @Data
 @Component
-public class Marks {
+public class Marks implements Serializable {
     @Id
     @SequenceGenerator(name = "marksIdSeqGen", sequenceName = "marks_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "marksIdSeqGen")

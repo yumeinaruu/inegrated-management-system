@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 @Entity(name = "faculty")
@@ -20,7 +21,7 @@ import java.util.Collection;
 @Data
 @ToString(exclude = "groups")
 @EqualsAndHashCode(exclude = "groups")
-public class Faculty {
+public class Faculty implements Serializable {
     @Id
     @SequenceGenerator(name = "facIdSeqGen", sequenceName = "faculty_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "facIdSeqGen")

@@ -13,12 +13,13 @@ import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 @Entity(name = "speciality")
 @Data
 @Component
-public class Speciality {
+public class Speciality implements Serializable {
     @Id
     @SequenceGenerator(name = "specSeqGen", sequenceName = "speciality_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "specSeqGen")

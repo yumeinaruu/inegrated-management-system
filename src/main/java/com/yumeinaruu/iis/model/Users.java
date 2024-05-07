@@ -17,6 +17,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 
@@ -25,7 +26,7 @@ import java.util.Collection;
 @Data
 @ToString(exclude = "groupId")
 @EqualsAndHashCode(exclude = "groupId")
-public class Users {
+public class Users implements Serializable {
     @Id
     @SequenceGenerator(name = "usersIdSeqGen", sequenceName = "users_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "usersIdSeqGen")

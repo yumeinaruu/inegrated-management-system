@@ -8,6 +8,10 @@ import com.yumeinaruu.iis.model.dto.users.UsersUsernameUpdateDto;
 import com.yumeinaruu.iis.repository.GroupRepository;
 import com.yumeinaruu.iis.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -31,10 +35,12 @@ public class UsersService {
         return usersRepository.findAll();
     }
 
+    @Cacheable(value = "UsersService::getUserById", key = "#id")
     public Optional<Users> getUserById(Long id) {
         return usersRepository.findById(id);
     }
 
+    @Cacheable(value = "UsersService::getUserByUsername", key = "#username")
     public Optional<Users> getUserByUsername(String username) {
         return usersRepository.findByUsername(username);
     }
@@ -43,6 +49,10 @@ public class UsersService {
         return usersRepository.findAll(Sort.by("username"));
     }
 
+    @Caching(cacheable = {
+            @Cacheable(value = "UsersService::getUserByUsername", key = "#usersCreateDto.username")
+
+    })
     public Boolean createUser(UsersCreateDto usersCreateDto) {
         Users user = new Users();
         user.setUsername(usersCreateDto.getUsername());
@@ -55,6 +65,11 @@ public class UsersService {
         return getUserById(savedUser.getId()).isPresent();
     }
 
+    @Caching(put = {
+            @CachePut(value = "UsersService::getUserById", key = "#usersUpdateDto.id"),
+            @CachePut(value = "UsersService::getUserByUsername", key = "#usersUpdateDto.username")
+
+    })
     public Boolean updateUser(UsersUpdateDto usersUpdateDto) {
         Optional<Users> optionalUser = usersRepository.findById(usersUpdateDto.getId());
         if (optionalUser.isPresent()) {
@@ -70,6 +85,11 @@ public class UsersService {
         return false;
     }
 
+    @Caching(put = {
+            @CachePut(value = "UsersService::getUserById", key = "#usersUpdateDto.id"),
+            @CachePut(value = "UsersService::getUserByUsername", key = "#usersUpdateDto.username")
+
+    })
     public Boolean updateUsersUsername(UsersUsernameUpdateDto usersUsernameUpdateDto) {
         Optional<Users> optionalUser = usersRepository.findById(usersUsernameUpdateDto.getId());
         if (optionalUser.isPresent()) {
@@ -82,6 +102,9 @@ public class UsersService {
         return false;
     }
 
+    @Caching(put = {
+            @CachePut(value = "UsersService::getUserById", key = "#usersUpdateDto.id")
+    })
     public Boolean updateUsersGroup(UsersUpdateGroupDto usersUpdateGroupDto) {
         Optional<Users> optionalUser = usersRepository.findById(usersUpdateGroupDto.getId());
         if (optionalUser.isPresent()) {
@@ -96,6 +119,7 @@ public class UsersService {
         return false;
     }
 
+    @CacheEvict(value = "UsersService::getUserById", key = "#id")
     public Boolean deleteUser(Long id) {
         Optional<Users> optionalUser = usersRepository.findById(id);
         if (optionalUser.isEmpty()) {
