@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +49,7 @@ public class UsersController {
     }
 
     @GetMapping("/id/{id}")
-    @PreAuthorize(("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')"))
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<Users> getUserById(@PathVariable Long id) {
         Optional<Users> user = usersService.getUserById(id);
         if (user.isPresent()) {
@@ -58,7 +59,7 @@ public class UsersController {
     }
 
     @GetMapping("/name/{name}")
-    @PreAuthorize(("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')"))
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<Users> getUserByName(@PathVariable String name) {
         Optional<Users> user = usersService.getUserByUsername(name);
         if (user.isPresent()) {
@@ -75,6 +76,16 @@ public class UsersController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping("/info")
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
+    public ResponseEntity<Users> getCurrentUser(Principal principal) {
+        Optional<Users> result = usersService.getInfoAboutCurrentUser(principal.getName());
+        if (result.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result.get(), HttpStatus.OK);
     }
 
     @PostMapping
@@ -101,7 +112,7 @@ public class UsersController {
     @PutMapping("/name")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> updateUserUsername(@RequestBody @Valid UsersUsernameUpdateDto usersUsernameUpdateDto,
-                                                           BindingResult bindingResult) {
+                                                         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new CustomValidationException(bindingResult.getAllErrors().toString());
         }

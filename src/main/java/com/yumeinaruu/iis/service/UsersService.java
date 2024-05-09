@@ -1,5 +1,6 @@
 package com.yumeinaruu.iis.service;
 
+import com.yumeinaruu.iis.aop.TimeAop;
 import com.yumeinaruu.iis.model.Users;
 import com.yumeinaruu.iis.model.dto.users.UsersCreateDto;
 import com.yumeinaruu.iis.model.dto.users.UsersUpdateDto;
@@ -7,12 +8,15 @@ import com.yumeinaruu.iis.model.dto.users.UsersUpdateGroupDto;
 import com.yumeinaruu.iis.model.dto.users.UsersUsernameUpdateDto;
 import com.yumeinaruu.iis.repository.GroupRepository;
 import com.yumeinaruu.iis.repository.UsersRepository;
+import com.yumeinaruu.iis.security.model.Security;
+import com.yumeinaruu.iis.security.repository.SecurityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -24,17 +28,21 @@ import java.util.Optional;
 public class UsersService {
     private final UsersRepository usersRepository;
     private final GroupRepository groupRepository;
+    private final SecurityRepository securityRepository;
 
     @Autowired
-    public UsersService(UsersRepository usersRepository, GroupRepository groupRepository) {
+    public UsersService(UsersRepository usersRepository, GroupRepository groupRepository,
+                        SecurityRepository securityRepository) {
         this.usersRepository = usersRepository;
         this.groupRepository = groupRepository;
+        this.securityRepository = securityRepository;
     }
 
     public List<Users> getAllUsers() {
         return usersRepository.findAll();
     }
 
+    @TimeAop
     @Cacheable(value = "UsersService::getUserById", key = "#id")
     public Optional<Users> getUserById(Long id) {
         return usersRepository.findById(id);
@@ -43,6 +51,14 @@ public class UsersService {
     @Cacheable(value = "UsersService::getUserByUsername", key = "#username")
     public Optional<Users> getUserByUsername(String username) {
         return usersRepository.findByUsername(username);
+    }
+
+    public Optional<Users> getInfoAboutCurrentUser(String username) {
+        Optional<Security> security = securityRepository.findByLogin(username);
+        if(security.isEmpty()){
+            return Optional.empty();
+        }
+        return usersRepository.findById(security.get().getUserId());
     }
 
     public List<Users> getUsersSortedByUsername() {
