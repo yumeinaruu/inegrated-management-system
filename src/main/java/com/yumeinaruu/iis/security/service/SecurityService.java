@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -65,8 +67,8 @@ public class SecurityService {
         securityRepository.save(userSecurity);
         emailService.sendEmailNoAttachment(userSecurity.getLogin(), emailService.getCc(),
                 "Registration in integrated management system", emailService.getRegistrationBody()
-        + "\n Your login: " + registrationDto.getLogin() + "\n Your password: " + registrationDto.getPassword() +
-                "\n Don't share to anyone this information");
+                        + "\n Your login: " + registrationDto.getLogin() + "\n Your password: " + registrationDto.getPassword() +
+                        "\n Don't share to anyone this information");
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -176,5 +178,27 @@ public class SecurityService {
             return savedSecurity.equals(security);
         }
         return false;
+    }
+
+    public List<Users> getAllStudents() {
+        List<Security> securityList = securityRepository.findAll();
+        List<Users> usersList = new ArrayList<>();
+        for (Security security : securityList) {
+            if (security.getRole().equals(Roles.STUDENT)) {
+                usersList.add(usersRepository.findById(security.getUserId()).orElse(null));
+            }
+        }
+        return usersList;
+    }
+
+    public List<Users> getAllTeachers() {
+        List<Security> securityList = securityRepository.findAll();
+        List<Users> usersList = new ArrayList<>();
+        for (Security security : securityList) {
+            if (security.getRole().equals(Roles.TEACHER)) {
+                usersList.add(usersRepository.findById(security.getUserId()).orElse(null));
+            }
+        }
+        return usersList;
     }
 }
