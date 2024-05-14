@@ -6,16 +6,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity(name = "schedule")
 @Component
 @Data
-public class Schedule {
+public class Schedule implements Serializable {
     @Id
     @SequenceGenerator(name = "scheduleIdSeqGen", sequenceName = "schedule_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "scheduleIdSeqGen")

@@ -13,9 +13,11 @@ import com.yumeinaruu.iis.repository.ScheduleRepository;
 import com.yumeinaruu.iis.repository.SubjectRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -40,10 +42,12 @@ public class ScheduleService {
         return scheduleRepository.findAll();
     }
 
+    @Cacheable(value = "ScheduleService::getScheduleById", key = "#id")
     public Optional<Schedule> getScheduleById(Long id) {
         return scheduleRepository.findById(id);
     }
 
+    @Cacheable(value = "ScheduleService::getScheduleByGroupName", key = "#name")
     public List<Schedule> getScheduleByGroupName(String name) {
         Optional<Group> group = groupRepository.findByName(name);
         if (group.isPresent()) {
@@ -52,6 +56,7 @@ public class ScheduleService {
         return null;
     }
 
+    @Cacheable(value = "ScheduleService::getScheduleBySubjectName", key = "#name")
     public List<Schedule> getScheduleBySubjectName(String name) {
         Optional<Subject> subject = subjectRepository.findByName(name);
         if (subject.isPresent()) {
@@ -60,6 +65,10 @@ public class ScheduleService {
         return null;
     }
 
+    @Caching(cacheable = {
+            @Cacheable(value = "ScheduleService::getScheduleByGroupName", key = "#scheduleCreateDto.group"),
+            @Cacheable(value = "ScheduleService::getScheduleBySubjectName", key = "#scheduleCreateDto.subject")
+    })
     public Boolean createSchedule(ScheduleCreateDto scheduleCreateDto) {
         Schedule schedule = new Schedule();
         schedule.setBeginning(scheduleCreateDto.getBeginning());
@@ -74,6 +83,10 @@ public class ScheduleService {
         return getScheduleById(savedSchedule.getId()).isPresent();
     }
 
+    @Caching(cacheable = {
+            @Cacheable(value = "ScheduleService::getScheduleByGroupName", key = "#scheduleCreateDto.group"),
+            @Cacheable(value = "ScheduleService::getScheduleBySubjectName", key = "#scheduleCreateDto.subject")
+    })
     public Boolean updateSchedule(ScheduleUpdateDto scheduleUpdateDto) {
         Optional<Schedule> optionalSchedule = scheduleRepository.findById(scheduleUpdateDto.getId());
         if (optionalSchedule.isPresent()) {
@@ -92,6 +105,10 @@ public class ScheduleService {
         return false;
     }
 
+    @Caching(cacheable = {
+            @Cacheable(value = "ScheduleService::getScheduleByGroupName", key = "#scheduleCreateDto.group"),
+            @Cacheable(value = "ScheduleService::getScheduleBySubjectName", key = "#scheduleCreateDto.subject")
+    })
     public Boolean scheduleUpdateTime(ScheduleUpdateTimeDto scheduleUpdateTimeDto) {
         Optional<Schedule> optionalSchedule = scheduleRepository.findById(scheduleUpdateTimeDto.getId());
         if (optionalSchedule.isPresent()) {
@@ -104,6 +121,10 @@ public class ScheduleService {
         return false;
     }
 
+    @Caching(cacheable = {
+            @Cacheable(value = "ScheduleService::getScheduleByGroupName", key = "#scheduleCreateDto.group"),
+            @Cacheable(value = "ScheduleService::getScheduleBySubjectName", key = "#scheduleCreateDto.subject")
+    })
     public Boolean scheduleUpdateSubject(ScheduleUpdateSubjectDto scheduleUpdateSubjectDto) {
         Optional<Schedule> optionalSchedule = scheduleRepository.findById(scheduleUpdateSubjectDto.getId());
         if (optionalSchedule.isPresent()) {
@@ -117,6 +138,10 @@ public class ScheduleService {
         return false;
     }
 
+    @Caching(cacheable = {
+            @Cacheable(value = "ScheduleService::getScheduleByGroupName", key = "#scheduleCreateDto.group"),
+            @Cacheable(value = "ScheduleService::getScheduleBySubjectName", key = "#scheduleCreateDto.subject")
+    })
     public Boolean scheduleUpdateGroup(ScheduleUpdateGroupDto scheduleUpdateGroupDto) {
         Optional<Schedule> optionalSchedule = scheduleRepository.findById(scheduleUpdateGroupDto.getId());
         if (optionalSchedule.isPresent()) {
@@ -130,6 +155,7 @@ public class ScheduleService {
         return false;
     }
 
+    @CacheEvict(value = "ScheduleService::getScheduleById", key = "#id")
     public Boolean deleteScheduleById(Long id) {
         Optional<Schedule> optionalSchedule = scheduleRepository.findById(id);
         if (optionalSchedule.isEmpty()) {
