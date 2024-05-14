@@ -95,7 +95,7 @@ public class UsersService {
                 user.setGroupId(groupRepository.findByName(usersUpdateDto.getGroup().getName()).get());
             }
             user.setChanged(Timestamp.valueOf(LocalDateTime.now()));
-            Users savedUser = usersRepository.save(user);
+            Users savedUser = usersRepository.saveAndFlush(user);
             return savedUser.equals(user);
         }
         return false;
@@ -112,7 +112,7 @@ public class UsersService {
             Users user = optionalUser.get();
             user.setUsername(usersUsernameUpdateDto.getUsername());
             user.setChanged(Timestamp.valueOf(LocalDateTime.now()));
-            Users savedUser = usersRepository.save(user);
+            Users savedUser = usersRepository.saveAndFlush(user);
             return savedUser.equals(user);
         }
         return false;
@@ -129,7 +129,7 @@ public class UsersService {
                 user.setGroupId(groupRepository.findByName(usersUpdateGroupDto.getGroup().getName()).get());
             }
             user.setChanged(Timestamp.valueOf(LocalDateTime.now()));
-            Users savedUser = usersRepository.save(user);
+            Users savedUser = usersRepository.saveAndFlush(user);
             return savedUser.equals(user);
         }
         return false;
