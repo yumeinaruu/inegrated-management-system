@@ -26,6 +26,10 @@ public class ScheduleCreateDto {
 
     @NotNull
     @FutureOrPresent
-    private Timestamp time;
+    private Timestamp beginning;
+
+    @NotNull
+    @FutureOrPresent
+    private Timestamp ending;
 }
 

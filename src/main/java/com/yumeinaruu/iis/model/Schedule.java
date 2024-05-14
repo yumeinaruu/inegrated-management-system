@@ -27,6 +27,9 @@ public class Schedule {
     @Column(name = "group_id", nullable = false)
     private Long groupId;
 
-    @Column(name = "time", nullable = false)
-    private Timestamp time;
+    @Column(name = "beginning", nullable = false)
+    private Timestamp beginning;
+
+    @Column(name = "ending", nullable = false)
+    private Timestamp ending;
 }

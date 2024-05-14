@@ -62,7 +62,8 @@ public class ScheduleService {
 
     public Boolean createSchedule(ScheduleCreateDto scheduleCreateDto) {
         Schedule schedule = new Schedule();
-        schedule.setTime(scheduleCreateDto.getTime());
+        schedule.setBeginning(scheduleCreateDto.getBeginning());
+        schedule.setEnding(scheduleCreateDto.getEnding());
         if (subjectRepository.findByName(scheduleCreateDto.getSubject()).isPresent()) {
             schedule.setSubjectId(subjectRepository.findByName(scheduleCreateDto.getSubject()).get().getId());
         }
@@ -77,7 +78,8 @@ public class ScheduleService {
         Optional<Schedule> optionalSchedule = scheduleRepository.findById(scheduleUpdateDto.getId());
         if (optionalSchedule.isPresent()) {
             Schedule schedule = optionalSchedule.get();
-            schedule.setTime(scheduleUpdateDto.getTime());
+            schedule.setBeginning(scheduleUpdateDto.getBeginning());
+            schedule.setEnding(scheduleUpdateDto.getEnding());
             if (subjectRepository.findByName(scheduleUpdateDto.getSubject()).isPresent()) {
                 schedule.setSubjectId(subjectRepository.findByName(scheduleUpdateDto.getSubject()).get().getId());
             }
@@ -94,7 +96,8 @@ public class ScheduleService {
         Optional<Schedule> optionalSchedule = scheduleRepository.findById(scheduleUpdateTimeDto.getId());
         if (optionalSchedule.isPresent()) {
             Schedule schedule = optionalSchedule.get();
-            schedule.setTime(scheduleUpdateTimeDto.getTime());
+            schedule.setBeginning(scheduleUpdateTimeDto.getBeginning());
+            schedule.setEnding(scheduleUpdateTimeDto.getEnding());
             Schedule savedSchedule = scheduleRepository.saveAndFlush(schedule);
             return savedSchedule.equals(schedule);
         }
@@ -140,7 +143,7 @@ public class ScheduleService {
     public void deleteExpiredSchedules() {
         List<Schedule> schedules = scheduleRepository.findAll();
         for (Schedule schedule : schedules) {
-            if (schedule.getTime().before(Timestamp.valueOf(LocalDateTime.now()))) {
+            if (schedule.getEnding().before(Timestamp.valueOf(LocalDateTime.now()))) {
                 scheduleRepository.delete(schedule);
                 log.info(schedule + " has been deleted in " + LocalDateTime.now());
             }
