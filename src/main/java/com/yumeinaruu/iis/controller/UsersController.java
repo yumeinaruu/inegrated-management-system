@@ -104,7 +104,6 @@ public class UsersController {
     }
 
     @PutMapping
-
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> updateUser(@RequestBody @Valid UsersUpdateDto usersUpdateDto,
                                                  BindingResult bindingResult) {
