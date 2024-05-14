@@ -165,7 +165,7 @@ public class ScheduleService {
         return true;
     }
 
-    @Scheduled(fixedDelay = 20000)
+    @Scheduled(cron = "* */20 * * * *")
     public void deleteExpiredSchedules() {
         List<Schedule> schedules = scheduleRepository.findAll();
         for (Schedule schedule : schedules) {
