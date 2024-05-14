@@ -3,6 +3,7 @@ package com.yumeinaruu.iis.controller;
 import com.yumeinaruu.iis.exception.custom_exception.CustomValidationException;
 import com.yumeinaruu.iis.model.Users;
 import com.yumeinaruu.iis.model.dto.users.UsersCreateDto;
+import com.yumeinaruu.iis.model.dto.users.UsersFindByNameDto;
 import com.yumeinaruu.iis.model.dto.users.UsersUpdateDto;
 import com.yumeinaruu.iis.model.dto.users.UsersUpdateGroupDto;
 import com.yumeinaruu.iis.model.dto.users.UsersUsernameUpdateDto;
@@ -58,10 +59,14 @@ public class UsersController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/name/{name}")
+    @PostMapping("/name")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
-    public ResponseEntity<Users> getUserByName(@PathVariable String name) {
-        Optional<Users> user = usersService.getUserByUsername(name);
+    public ResponseEntity<Users> getUserByName(@RequestBody @Valid UsersFindByNameDto name,
+                                               BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new CustomValidationException(bindingResult.getAllErrors().toString());
+        }
+        Optional<Users> user = usersService.getUserByUsername(name.getUsername());
         if (user.isPresent()) {
             return new ResponseEntity<>(user.get(), HttpStatus.OK);
         }
