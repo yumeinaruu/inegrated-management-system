@@ -15,6 +15,10 @@ services:
     depends_on:
       - db
       - redis
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://frosty_ride:5432/iis_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123
     networks:
       - iis_network
 
