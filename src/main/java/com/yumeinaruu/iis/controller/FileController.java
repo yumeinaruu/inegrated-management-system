@@ -1,6 +1,7 @@
 package com.yumeinaruu.iis.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/file")
 @SecurityRequirement(name = "Bearer Authentication")
+@Slf4j
 public class FileController {
     private final Path ROOT_FILE_PATH = Paths.get("data");
 
@@ -38,7 +40,7 @@ public class FileController {
             Files.copy(file.getInputStream(), ROOT_FILE_PATH.resolve(file.getOriginalFilename()));
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (IOException e) {
-            System.out.println(e);
+            log.warn(e + "");
         }
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
@@ -56,7 +58,7 @@ public class FileController {
                 return new ResponseEntity<>(resource, headers, HttpStatus.OK);
             }
         } catch (MalformedURLException e) {
-            System.out.println(e);
+            log.warn(e + "");
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -68,9 +70,11 @@ public class FileController {
             ArrayList<String> filenames = (ArrayList<String>) Files.walk(this.ROOT_FILE_PATH, 1).filter(path -> !path.equals(this.ROOT_FILE_PATH)).map(Path::toString).collect(Collectors.toList());
             return new ResponseEntity<>(filenames, HttpStatus.OK);
         } catch (IOException e) {
-            System.out.println(e);
+            log.warn(e + "");
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        } finally {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.CONFLICT);
     }
 
     @DeleteMapping("/{filename}")
