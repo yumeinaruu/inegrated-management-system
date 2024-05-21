@@ -40,7 +40,6 @@ public class UsersController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Users>> getAllUsers() {
         List<Users> users = usersService.getAllUsers();
         if (users.isEmpty()) {
@@ -50,7 +49,6 @@ public class UsersController {
     }
 
     @GetMapping("/id/{id}")
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<Users> getUserById(@PathVariable Long id) {
         Optional<Users> user = usersService.getUserById(id);
         if (user.isPresent()) {
@@ -60,7 +58,6 @@ public class UsersController {
     }
 
     @PostMapping("/name")
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<Users> getUserByName(@RequestBody @Valid UsersFindByNameDto name,
                                                BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -74,7 +71,6 @@ public class UsersController {
     }
 
     @GetMapping("/name-sort")
-    @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Users>> getUsersSortedByUsername() {
         List<Users> users = usersService.getUsersSortedByUsername();
         if (users.isEmpty()) {

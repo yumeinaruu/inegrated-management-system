@@ -36,7 +36,6 @@ public class FacultyController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Faculty>> getAllFaculties() {
         List<Faculty> faculties = facultyService.getAllFaculties();
         if (faculties.isEmpty()) {
@@ -46,7 +45,6 @@ public class FacultyController {
     }
 
     @GetMapping("/name-sort")
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Faculty>> getAllFacultiesSortedByName() {
         List<Faculty> faculties = facultyService.getFacultiesSortedByName();
         if (faculties.isEmpty()) {
@@ -56,7 +54,6 @@ public class FacultyController {
     }
 
     @GetMapping("/id/{id}")
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<Faculty> getFacultyById(@PathVariable Long id) {
         Optional<Faculty> faculty = facultyService.getFacultyById(id);
         if (faculty.isPresent()) {
@@ -66,7 +63,6 @@ public class FacultyController {
     }
 
     @GetMapping("/name/{name}")
-    @PreAuthorize(("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')"))
     public ResponseEntity<Faculty> getFacultyByName(@PathVariable String name) {
         Optional<Faculty> faculty = facultyService.getFacultyByName(name);
         if (faculty.isPresent()) {

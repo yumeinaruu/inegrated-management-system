@@ -39,7 +39,6 @@ public class GroupController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Group>> getAllGroups() {
         List<Group> groups = groupService.getAllGroups();
         if (groups.isEmpty()) {
@@ -49,7 +48,6 @@ public class GroupController {
     }
 
     @GetMapping("/id/{id}")
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<Group> getGroupById(@PathVariable Long id) {
         Optional<Group> group = groupService.getGroupById(id);
         if (group.isPresent()) {
@@ -59,7 +57,6 @@ public class GroupController {
     }
 
     @GetMapping("/name/{name}")
-    @PreAuthorize(("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')"))
     public ResponseEntity<Group> getGroupByName(@PathVariable String name) {
         Optional<Group> group = groupService.getGroupByName(name);
         if (group.isPresent()) {
@@ -69,7 +66,6 @@ public class GroupController {
     }
 
     @GetMapping("/name-sort")
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Group>> getGroupsSortedByName() {
         List<Group> groups = groupService.getGroupsSortedByName();
         if (groups.isEmpty()) {
