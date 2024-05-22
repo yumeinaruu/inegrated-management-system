@@ -16,7 +16,6 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -29,6 +28,7 @@ public class UsersService {
     private final UsersRepository usersRepository;
     private final GroupRepository groupRepository;
     private final SecurityRepository securityRepository;
+
 
     @Autowired
     public UsersService(UsersRepository usersRepository, GroupRepository groupRepository,

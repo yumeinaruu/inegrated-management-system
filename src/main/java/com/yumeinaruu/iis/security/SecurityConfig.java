@@ -1,7 +1,6 @@
 package com.yumeinaruu.iis.security;
 
 import com.yumeinaruu.iis.security.filter.JwtFilter;
-import com.yumeinaruu.iis.security.service.JwtUtils;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +27,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableMethodSecurity
 public class SecurityConfig {
     private final JwtFilter jwtFilter;
-
-    private static final String[] AUTH_WHITELIST = {
-            "/v3/api-docs",
-            "/swagger-ui/"
-    };
 
     @Autowired
     public SecurityConfig(JwtFilter jwtFilter) {
