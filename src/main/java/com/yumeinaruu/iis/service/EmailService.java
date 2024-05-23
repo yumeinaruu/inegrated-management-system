@@ -25,7 +25,7 @@ public class EmailService {
         this.mailSender = mailSender;
     }
 
-    public String sendEmail(MultipartFile[] file, String to, String[] cc, String subject, String body) {
+    public Boolean sendEmail(MultipartFile[] file, String to, String[] cc, String subject, String body) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
 
@@ -46,11 +46,11 @@ public class EmailService {
                 }
             }
             mailSender.send(mimeMessage);
-            return "mail sent successfully";
+            return true;
         } catch (Exception e) {
             System.out.println(e);
         }
-        return "mail sent failed";
+        return false;
     }
 
     public String sendEmailNoAttachment(String to, String[] cc, String subject, String body) {
