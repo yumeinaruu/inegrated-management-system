@@ -2,7 +2,6 @@ package com.yumeinaruu.iis.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yumeinaruu.iis.model.Group;
-import com.yumeinaruu.iis.model.Users;
 import com.yumeinaruu.iis.model.dto.faculty.FacultyForGroupDto;
 import com.yumeinaruu.iis.model.dto.group.GroupCreateDto;
 import com.yumeinaruu.iis.model.dto.group.GroupFacultyUpdateDto;
@@ -25,10 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
