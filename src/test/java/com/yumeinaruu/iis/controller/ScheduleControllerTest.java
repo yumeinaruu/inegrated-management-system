@@ -2,14 +2,11 @@ package com.yumeinaruu.iis.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yumeinaruu.iis.model.Schedule;
-import com.yumeinaruu.iis.model.dto.faculty.FacultyForGroupDto;
-import com.yumeinaruu.iis.model.dto.group.GroupSpecialityUpdateDto;
 import com.yumeinaruu.iis.model.dto.schedule.ScheduleCreateDto;
 import com.yumeinaruu.iis.model.dto.schedule.ScheduleUpdateDto;
 import com.yumeinaruu.iis.model.dto.schedule.ScheduleUpdateGroupDto;
 import com.yumeinaruu.iis.model.dto.schedule.ScheduleUpdateSubjectDto;
 import com.yumeinaruu.iis.model.dto.schedule.ScheduleUpdateTimeDto;
-import com.yumeinaruu.iis.model.dto.speciality.SpecialityForGroupDto;
 import com.yumeinaruu.iis.security.filter.JwtFilter;
 import com.yumeinaruu.iis.service.ScheduleService;
 import org.hamcrest.Matchers;
