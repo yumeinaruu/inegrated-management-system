@@ -59,7 +59,7 @@ public class SubjectService {
             if(departmentRepository.findByName(subjectUpdateDto.getDepartment()).isPresent()) {
                 subject.setDepartmentId(departmentRepository.findByName(subjectUpdateDto.getDepartment()).get().getId());
             }
-            Subject savedSubject = subjectRepository.save(subject);
+            Subject savedSubject = subjectRepository.saveAndFlush(subject);
             return savedSubject.equals(subject);
         }
         return false;
@@ -70,7 +70,7 @@ public class SubjectService {
         if(optionalSubject.isPresent()) {
             Subject subject = optionalSubject.get();
             subject.setName(subjectNameUpdateDto.getName());
-            Subject savedSubject = subjectRepository.save(subject);
+            Subject savedSubject = subjectRepository.saveAndFlush(subject);
             return savedSubject.equals(subject);
         }
         return false;
@@ -83,7 +83,7 @@ public class SubjectService {
             if(departmentRepository.findByName(subjectDepartmentUpdateDto.getDepartment()).isPresent()) {
                 subject.setDepartmentId(departmentRepository.findByName(subjectDepartmentUpdateDto.getDepartment()).get().getId());
             }
-            Subject savedSubject = subjectRepository.save(subject);
+            Subject savedSubject = subjectRepository.saveAndFlush(subject);
             return savedSubject.equals(subject);
         }
         return false;

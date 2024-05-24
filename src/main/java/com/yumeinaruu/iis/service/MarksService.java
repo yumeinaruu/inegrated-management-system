@@ -69,7 +69,7 @@ public class MarksService {
             if(usersRepository.findByUsername(marksUpdateDto.getUser().getUsername()).isPresent()){
                 marks.setUserId(usersRepository.findByUsername(marksUpdateDto.getUser().getUsername()).get());
             }
-            Marks savedMarks = marksRepository.save(marks);
+            Marks savedMarks = marksRepository.saveAndFlush(marks);
             return getMarkById(savedMarks.getId()).isPresent();
         }
         return false;
@@ -80,7 +80,7 @@ public class MarksService {
         if (optionalMarks.isPresent()) {
             Marks marks = optionalMarks.get();
             marks.setMark(marksMarkUpdateDto.getMark());
-            Marks savedMarks = marksRepository.save(marks);
+            Marks savedMarks = marksRepository.saveAndFlush(marks);
             return getMarkById(savedMarks.getId()).isPresent();
         }
         return false;
@@ -93,7 +93,7 @@ public class MarksService {
             if(subjectRepository.findByName(marksSubjectUpdateDto.getSubject()).isPresent()){
                 marks.setSubjectId(subjectRepository.findByName(marksSubjectUpdateDto.getSubject()).get().getId());
             }
-            Marks savedMarks = marksRepository.save(marks);
+            Marks savedMarks = marksRepository.saveAndFlush(marks);
             return getMarkById(savedMarks.getId()).isPresent();
         }
         return false;
@@ -106,7 +106,7 @@ public class MarksService {
             if(usersRepository.findByUsername(marksUserUpdateDto.getUser().getUsername()).isPresent()){
                 marks.setUserId(usersRepository.findByUsername(marksUserUpdateDto.getUser().getUsername()).get());
             }
-            Marks savedMarks = marksRepository.save(marks);
+            Marks savedMarks = marksRepository.saveAndFlush(marks);
             return getMarkById(savedMarks.getId()).isPresent();
         }
         return false;

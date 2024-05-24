@@ -59,7 +59,7 @@ public class SpecialityService {
             if (facultyRepository.findByName(specialityUpdateDto.getFaculty().getName()).isPresent()) {
                 speciality.setFacultyId(facultyRepository.findByName(specialityUpdateDto.getFaculty().getName()).get());
             }
-            Speciality savedSpeciality = specialityRepository.save(speciality);
+            Speciality savedSpeciality = specialityRepository.saveAndFlush(speciality);
             return savedSpeciality.equals(speciality);
         }
         return false;
@@ -70,7 +70,7 @@ public class SpecialityService {
         if (optionalSpeciality.isPresent()) {
             Speciality speciality = optionalSpeciality.get();
             speciality.setName(specialityUpdateNameDto.getName());
-            Speciality savedSpeciality = specialityRepository.save(speciality);
+            Speciality savedSpeciality = specialityRepository.saveAndFlush(speciality);
             return savedSpeciality.equals(speciality);
         }
         return false;
@@ -83,7 +83,7 @@ public class SpecialityService {
             if (facultyRepository.findByName(specialityUpdateFacultyDto.getFaculty().getName()).isPresent()) {
                 speciality.setFacultyId(facultyRepository.findByName(specialityUpdateFacultyDto.getFaculty().getName()).get());
             }
-            Speciality savedSpeciality = specialityRepository.save(speciality);
+            Speciality savedSpeciality = specialityRepository.saveAndFlush(speciality);
             return savedSpeciality.equals(speciality);
         }
         return false;
