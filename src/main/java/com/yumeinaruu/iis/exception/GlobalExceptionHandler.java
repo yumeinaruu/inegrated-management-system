@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 
+import java.nio.file.FileAlreadyExistsException;
 import java.sql.SQLException;
 
 @ControllerAdvice
@@ -36,5 +38,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<HttpStatus> handleIllegalArgumentException(IllegalArgumentException ex) {
         log.error("Error occurred: " + ex);
         return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(FileAlreadyExistsException.class)
+    public ResponseEntity<HttpStatus> handleFileAlreadyExistsException(FileAlreadyExistsException ex) {
+        log.error("Error occurred: " + ex);
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(HttpClientErrorException.Forbidden.class)
+    public ResponseEntity<HttpStatus> handleHttpClientErrorException(HttpClientErrorException ex) {
+        log.warn("Forbidden: " + ex);
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 }

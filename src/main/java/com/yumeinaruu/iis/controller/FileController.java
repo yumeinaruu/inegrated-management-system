@@ -1,17 +1,20 @@
 package com.yumeinaruu.iis.controller;
 
+import com.yumeinaruu.iis.model.dto.file.FileDownloadDto;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +36,7 @@ import java.util.stream.Collectors;
 public class FileController {
     private final Path ROOT_FILE_PATH = Paths.get("data");
 
-    @PostMapping("/upload")
+    @PostMapping(name = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> upload(@RequestParam("file") MultipartFile file) {
         try {
@@ -45,11 +48,11 @@ public class FileController {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    @GetMapping("/{filename}")
+    @PostMapping("/filename")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
-    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
+    public ResponseEntity<Resource> getFile(@RequestBody FileDownloadDto fileDownloadDto) {
 
-        Path path = ROOT_FILE_PATH.resolve(filename);
+        Path path = ROOT_FILE_PATH.resolve(fileDownloadDto.getFileName());
         try {
             Resource resource = new UrlResource(path.toUri());
             if (resource.exists()) {
@@ -72,15 +75,13 @@ public class FileController {
         } catch (IOException e) {
             log.warn(e + "");
             return new ResponseEntity<>(HttpStatus.CONFLICT);
-        } finally {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+            }
     }
 
-    @DeleteMapping("/{filename}")
+    @DeleteMapping("/filename")
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN', 'SUPERADMIN')")
-    public ResponseEntity<HttpStatus> deleteFile(@PathVariable String filename) {
-        Path path = ROOT_FILE_PATH.resolve(filename);
+    public ResponseEntity<HttpStatus> deleteFile(@RequestBody FileDownloadDto fileDownloadDto) {
+        Path path = ROOT_FILE_PATH.resolve(fileDownloadDto.getFileName());
 
         File file = new File(path.toString());
         if (file.delete()) {
