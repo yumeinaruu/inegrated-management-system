@@ -47,7 +47,7 @@ Options:
   3. curl -fsSL https://get.docker.com -o get-docker.sh
   4. sudo sh get-docker.sh
   5. git clone https://github.com/yumeinaruu/integrated-management-system
-  6. docker-compose up -d
+  6. docker compose up --build
   7. go to http://{YOUR_DROPLET_IP}:8080/swagger-ui/index.html#/
   8. go to security/token endpoint and get your JWT token
   9. insert token on swagger page in form
