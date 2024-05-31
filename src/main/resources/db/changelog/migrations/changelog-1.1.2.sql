@@ -1,3 +1,7 @@
+--liquibase formatted sql
+
+--changeset yumeinaruu:11
+--comment group to faculty and speciality delete and update set on cascade
 alter table groups
 drop constraint group_faculty_id_fk;
 

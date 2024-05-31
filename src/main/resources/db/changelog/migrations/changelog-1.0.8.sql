@@ -1,3 +1,7 @@
+--liquibase formatted sql
+
+--changeset yumeinaruu:8
+--comment subject to department delete and update on cascade
 alter table subject
 drop constraint subject_department_id_fk;
 

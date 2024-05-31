@@ -1,3 +1,7 @@
+--liquibase formatted sql
+
+--changeset yumeinaruu:14
+--comment cascade deletion for groups removed
 alter table public.users
 drop constraint users_group_id_fk;
 

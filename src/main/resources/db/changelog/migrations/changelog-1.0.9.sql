@@ -1,3 +1,7 @@
+--liquibase formatted sql
+
+--changeset yumeinaruu:9
+--comment speciality to faculty delete and update on cascade
 alter table speciality
 drop constraint speciality_faculty_id_fk;
 

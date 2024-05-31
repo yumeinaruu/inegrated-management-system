@@ -1,3 +1,7 @@
+--liquibase formatted sql
+
+--changeset yumeinaruu:10
+--comment subject to marks delete and update on cascade
 alter table marks
 drop constraint marks_subject_id_fk;
 

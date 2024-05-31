@@ -1,3 +1,7 @@
+--liquibase formatted sql
+
+--changeset yumeinaruu:12
+--comment schedule table added
 create table schedule
 (
     id         bigserial                   not null
