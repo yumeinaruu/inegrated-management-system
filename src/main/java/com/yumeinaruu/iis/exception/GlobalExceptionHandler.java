@@ -6,6 +6,7 @@ import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
@@ -50,5 +51,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<HttpStatus> handleHttpClientErrorException(HttpClientErrorException ex) {
         log.warn("Forbidden: " + ex);
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(value = {UsernameNotFoundException.class})
+    public ResponseEntity<HttpStatus> usernameNotFound(Exception exception) {
+        log.error(exception + "");
+        return new ResponseEntity<>(HttpStatus.valueOf(401));
     }
 }
