@@ -8,7 +8,11 @@ import com.yumeinaruu.iis.model.dto.group.GroupNameUpdateDto;
 import com.yumeinaruu.iis.model.dto.group.GroupSpecialityUpdateDto;
 import com.yumeinaruu.iis.model.dto.group.GroupUpdateDto;
 import com.yumeinaruu.iis.service.GroupService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +33,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/group")
+@Tag(name = "Work with groups", description = "Methods to work with groups")
 @SecurityRequirement(name = "Bearer Authentication")
 public class GroupController {
     private final GroupService groupService;
@@ -38,6 +43,14 @@ public class GroupController {
         this.groupService = groupService;
     }
 
+    @Operation(summary = "Gives info about all groups")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Groups info has returned successfully"),
+            @ApiResponse(responseCode = "404", description = "Groups not found"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @GetMapping
     public ResponseEntity<List<Group>> getAllGroups() {
         List<Group> groups = groupService.getAllGroups();
@@ -47,6 +60,14 @@ public class GroupController {
         return new ResponseEntity<>(groups, HttpStatus.OK);
     }
 
+    @Operation(summary = "Gives info about group by id")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Group info has returned successfully"),
+            @ApiResponse(responseCode = "404", description = "Group not found"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @GetMapping("/id/{id}")
     public ResponseEntity<Group> getGroupById(@PathVariable Long id) {
         Optional<Group> group = groupService.getGroupById(id);
@@ -56,6 +77,14 @@ public class GroupController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @Operation(summary = "Gives info about group by name")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Group info has returned successfully"),
+            @ApiResponse(responseCode = "404", description = "Group not found"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @GetMapping("/name/{name}")
     public ResponseEntity<Group> getGroupByName(@PathVariable String name) {
         Optional<Group> group = groupService.getGroupByName(name);
@@ -65,6 +94,14 @@ public class GroupController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @Operation(summary = "Gives info about groups sorted by name")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Groups info has returned successfully"),
+            @ApiResponse(responseCode = "404", description = "Groups not found"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @GetMapping("/name-sort")
     public ResponseEntity<List<Group>> getGroupsSortedByName() {
         List<Group> groups = groupService.getGroupsSortedByName();
@@ -74,6 +111,13 @@ public class GroupController {
         return new ResponseEntity<>(groups, HttpStatus.OK);
     }
 
+    @Operation(summary = "Creates group")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Group was created successfully"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> createGroup(@RequestBody @Valid GroupCreateDto groupCreateDto,
@@ -84,6 +128,13 @@ public class GroupController {
         return new ResponseEntity<>(groupService.createGroup(groupCreateDto) ? HttpStatus.CREATED : HttpStatus.CONFLICT);
     }
 
+    @Operation(summary = "Updates group")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Group was updated successfully"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @PutMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> updateGroup(@RequestBody @Valid GroupUpdateDto groupUpdateDto,
@@ -94,6 +145,13 @@ public class GroupController {
         return new ResponseEntity<>(groupService.updateGroup(groupUpdateDto) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }
 
+    @Operation(summary = "Updates group name")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Group was updated successfully"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @PutMapping("/name")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> updateGroupName(@RequestBody @Valid GroupNameUpdateDto groupNameUpdateDto,
@@ -104,6 +162,13 @@ public class GroupController {
         return new ResponseEntity<>(groupService.updateName(groupNameUpdateDto) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }
 
+    @Operation(summary = "Updates group faculty")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Group was updated successfully"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @PutMapping("/faculty")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> updateFaculty(@RequestBody @Valid GroupFacultyUpdateDto groupFacultyUpdateDto,
@@ -114,6 +179,13 @@ public class GroupController {
         return new ResponseEntity<>(groupService.updateFaculty(groupFacultyUpdateDto) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }
 
+    @Operation(summary = "Updates group speciality")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Group was updated successfully"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @PutMapping("/speciality")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> updateSpeciality(@RequestBody @Valid GroupSpecialityUpdateDto groupSpecialityUpdateDto,
@@ -124,6 +196,13 @@ public class GroupController {
         return new ResponseEntity<>(groupService.updateSpeciality(groupSpecialityUpdateDto) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }
 
+    @Operation(summary = "Deletes group")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Group was deleted successfully"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> deleteGroupById(@PathVariable Long id) {

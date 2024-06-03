@@ -8,7 +8,11 @@ import com.yumeinaruu.iis.model.dto.marks.MarksSubjectUpdateDto;
 import com.yumeinaruu.iis.model.dto.marks.MarksUpdateDto;
 import com.yumeinaruu.iis.model.dto.marks.MarksUserUpdateDto;
 import com.yumeinaruu.iis.service.MarksService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +33,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/marks")
+@Tag(name = "Work with marks", description = "Methods to work with marks")
 @SecurityRequirement(name = "Bearer Authentication")
 public class MarksController {
     private final MarksService marksService;
@@ -38,6 +43,14 @@ public class MarksController {
         this.marksService = marksService;
     }
 
+    @Operation(summary = "Gives info about all marks")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Marks info has returned successfully"),
+            @ApiResponse(responseCode = "404", description = "Marks not found"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @GetMapping
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Marks>> getAllMarks() {
@@ -48,6 +61,14 @@ public class MarksController {
         return new ResponseEntity<>(marks, HttpStatus.OK);
     }
 
+    @Operation(summary = "Gives info about mark by id")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Mark info has returned successfully"),
+            @ApiResponse(responseCode = "404", description = "Mark not found"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<Marks> getMarksById(@PathVariable Long id) {
@@ -58,6 +79,14 @@ public class MarksController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @Operation(summary = "Gives info about marks sorted ascending")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Marks info has returned successfully"),
+            @ApiResponse(responseCode = "404", description = "Marks not found"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @GetMapping("/ascending")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Marks>> getMarksAscending() {
@@ -68,6 +97,14 @@ public class MarksController {
         return new ResponseEntity<>(marks, HttpStatus.OK);
     }
 
+    @Operation(summary = "Gives info about marks sorted descending")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Marks info has returned successfully"),
+            @ApiResponse(responseCode = "404", description = "Marks not found"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @GetMapping("/descending")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<List<Marks>> getMarksDescending() {
@@ -78,6 +115,13 @@ public class MarksController {
         return new ResponseEntity<>(marks, HttpStatus.OK);
     }
 
+    @Operation(summary = "Creates mark")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Mark was created successfully"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @PostMapping
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> createMarks(@RequestBody @Valid MarksCreateDto marksCreateDto,
@@ -88,6 +132,13 @@ public class MarksController {
         return new ResponseEntity<>(marksService.createMark(marksCreateDto) ? HttpStatus.CREATED : HttpStatus.CONFLICT);
     }
 
+    @Operation(summary = "Updates mark overall")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Mark was updated successfully"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @PutMapping
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> updateMarks(@RequestBody @Valid MarksUpdateDto marksUpdateDto,
@@ -98,6 +149,13 @@ public class MarksController {
         return new ResponseEntity<>(marksService.updateMark(marksUpdateDto) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }
 
+    @Operation(summary = "Updates mark(only mark field)")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Mark was updated successfully"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @PutMapping("/mark")
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> updateMarksMark(@RequestBody @Valid MarksMarkUpdateDto marksMarkUpdateDto,
@@ -108,6 +166,13 @@ public class MarksController {
         return new ResponseEntity<>(marksService.updateMarksMark(marksMarkUpdateDto) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }
 
+    @Operation(summary = "Updates mark's subject")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Mark was updated successfully"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @PutMapping("/subject")
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> updateMarksSubject(@RequestBody @Valid MarksSubjectUpdateDto marksSubjectUpdateDto,
@@ -118,6 +183,13 @@ public class MarksController {
         return new ResponseEntity<>(marksService.updateMarksSubject(marksSubjectUpdateDto) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }
 
+    @Operation(summary = "Updates user who has that mark")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Mark was updated successfully"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @PutMapping("/user")
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> updateMarksUser(@RequestBody @Valid MarksUserUpdateDto marksUserUpdateDto,
@@ -128,6 +200,13 @@ public class MarksController {
         return new ResponseEntity<>(marksService.updateMarksUser(marksUserUpdateDto) ? HttpStatus.NO_CONTENT : HttpStatus.CONFLICT);
     }
 
+    @Operation(summary = "Deletes mark")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Mark was deleted successfully"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> deleteMarkById(@PathVariable Long id) {

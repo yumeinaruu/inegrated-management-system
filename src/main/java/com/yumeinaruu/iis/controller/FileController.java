@@ -1,7 +1,11 @@
 package com.yumeinaruu.iis.controller;
 
 import com.yumeinaruu.iis.model.dto.file.FileDownloadDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -30,11 +34,19 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/file")
+@Tag(name = "Work with files", description = "Methods to work with files")
 @SecurityRequirement(name = "Bearer Authentication")
 @Slf4j
 public class FileController {
     private final Path ROOT_FILE_PATH = Paths.get("data");
 
+    @Operation(summary = "Uploads a file")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "file uploaded successfully"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @PostMapping(name = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> upload(@RequestParam("file") MultipartFile file) {
@@ -47,6 +59,14 @@ public class FileController {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
+    @Operation(summary = "Returns a file")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "File returned successfully"),
+            @ApiResponse(responseCode = "404", description = "File not found"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @PostMapping("/filename")
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<Resource> getFile(@RequestBody FileDownloadDto fileDownloadDto) {
@@ -65,6 +85,13 @@ public class FileController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @Operation(summary = "Returns all file names")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "File names returned successfully"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @GetMapping
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<ArrayList<String>> getFiles() {
@@ -77,6 +104,13 @@ public class FileController {
             }
     }
 
+    @Operation(summary = "Deletes a file")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "File was deleted successfully"),
+            @ApiResponse(responseCode = "500", description = "Server error"),
+            @ApiResponse(responseCode = "403", description = "You have no rights to this resource"),
+            @ApiResponse(responseCode = "409", description = "Some error from your/our side")
+    })
     @DeleteMapping("/filename")
     @PreAuthorize("hasAnyRole('TEACHER', 'ADMIN', 'SUPERADMIN')")
     public ResponseEntity<HttpStatus> deleteFile(@RequestBody FileDownloadDto fileDownloadDto) {
