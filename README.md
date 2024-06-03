@@ -36,7 +36,7 @@ Options:
  On local machine:
   1. Install docker
   2. git clone https://github.com/yumeinaruu/integrated-management-system
-  3. docker-compose up -d
+  3. docker compose up -d
   4. go to http://localhost:8080/swagger-ui/index.html#/
   5. go to security/token endpoint and get your JWT token
   6. insert token on swagger page in form
