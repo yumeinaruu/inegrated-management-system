@@ -21,7 +21,7 @@ import java.util.Collection;
 @Component
 public class Group implements Serializable {
     @Id
-    @SequenceGenerator(name = "groupIdSeqGen", sequenceName = "group_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "groupIdSeqGen", sequenceName = "groups_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "groupIdSeqGen")
     private Long id;
 
